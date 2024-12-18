@@ -1,7 +1,5 @@
-const { DataTypes, Sequelize } = require('sequelize');
-
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async ({ context: queryInterface }) => {
     // Add new columns to the users table
     await queryInterface.addColumn('users', 'firstname', {
       type: DataTypes.STRING,
@@ -25,7 +23,7 @@ module.exports = {
     await queryInterface.removeColumn('users', 'name');
   },
 
-  down: async (queryInterface, Sequelize) => {
+  down: async ({ context: queryInterface }) => {
     // Restore the 'name' column
     await queryInterface.addColumn('users', 'name', {
       type: DataTypes.STRING,

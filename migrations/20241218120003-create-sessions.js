@@ -1,7 +1,10 @@
-const { DataTypes, Sequelize } = require('sequelize');
+'use strict';
+
+const { DataTypes } = require('sequelize');
 
 module.exports = {
-  up: async (queryInterface, Sequelize) => {
+  up: async ({ context: queryInterface }) => {
+    // Create the sessions table
     await queryInterface.createTable('sessions', {
       id: {
         type: DataTypes.INTEGER,
@@ -27,21 +30,21 @@ module.exports = {
       created_at: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
+        defaultValue: DataTypes.NOW,
       },
       updated_at: {
         type: DataTypes.DATE,
         allowNull: false,
-        defaultValue: Sequelize.fn('NOW'),
+        defaultValue: DataTypes.NOW,
       },
     });
 
-    // Adding an index to user_id to improve query performance
+    // Add an index to the user_id column for performance optimization
     await queryInterface.addIndex('sessions', ['user_id']);
   },
 
-  down: async (queryInterface, Sequelize) => {
-    // Drop the sessions table and remove the index if it was added
+  down: async ({ context: queryInterface }) => {
+    // Remove the index and drop the table
     await queryInterface.removeIndex('sessions', ['user_id']);
     await queryInterface.dropTable('sessions');
   },
