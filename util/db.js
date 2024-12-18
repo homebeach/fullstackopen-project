@@ -1,9 +1,15 @@
-const Sequelize = require('sequelize')
-const { DATABASE_URL } = require('./config')
-const { Umzug, SequelizeStorage } = require('umzug')
+const Sequelize = require('sequelize');
+const { DATABASE_URL } = require('./config');
+const { Umzug, SequelizeStorage } = require('umzug');
 
 const sequelize = new Sequelize(DATABASE_URL, {
-  logging: console.log
+  logging: console.log,
+  dialectOptions: {
+    ssl: {
+      require: true, // Enforces SSL usage
+      rejectUnauthorized: false, // Allows self-signed certificates (for development)
+    },
+  },
 });
 
 const runMigrations = async () => {
@@ -14,26 +20,25 @@ const runMigrations = async () => {
     storage: new SequelizeStorage({ sequelize, tableName: 'migrations' }),
     context: sequelize.getQueryInterface(),
     logger: console,
-  })
+  });
 
-  const migrations = await migrator.up()
+  const migrations = await migrator.up();
   console.log('Migrations up to date', {
     files: migrations.map((mig) => mig.name),
-  })
-}
+  });
+};
 
 const connectToDatabase = async () => {
   try {
-    await sequelize.authenticate()
-    await runMigrations()
-    console.log('database connected')
+    await sequelize.authenticate();
+    await runMigrations();
+    console.log('database connected');
   } catch (err) {
-    console.log(err)
-    console.log('connecting database failed')
-    return process.exit(1)
+    console.error('Error connecting to the database:', err);
+    return process.exit(1);
   }
 
-  return null
-}
+  return null;
+};
 
-module.exports = { connectToDatabase, sequelize }
+module.exports = { connectToDatabase, sequelize };
