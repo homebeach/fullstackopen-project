@@ -14,14 +14,27 @@ User.init({
     unique: true,
     allowNull: false,
     validate: {
-      isEmail: {  // Ensure username is a valid email
+      isEmail: { // Ensure username is a valid email
         msg: 'Validation isEmail on username failed',
       },
     },
   },
-  name: {
+  firstname: {
     type: DataTypes.STRING,
     allowNull: false,
+  },
+  lastname: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  otherNames: {
+    type: DataTypes.STRING,
+    allowNull: true, // Optional field
+  },
+  userType: {
+    type: DataTypes.ENUM('customer', 'librarian', 'admin'),
+    allowNull: false,
+    defaultValue: 'customer',
   },
   disabled: {
     type: DataTypes.BOOLEAN,
