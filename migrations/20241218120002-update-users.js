@@ -1,3 +1,5 @@
+const { DataTypes, Sequelize } = require('sequelize');
+
 module.exports = {
   up: async ({ context: queryInterface }) => {
     // Add new columns to the users table
