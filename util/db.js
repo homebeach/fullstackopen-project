@@ -6,7 +6,7 @@ const sequelize = new Sequelize(DATABASE_URL, {
   logging: console.log,
   dialectOptions: {
     ssl: {
-      require: true, // Enforces SSL usage
+      require: false, // Enforces SSL usage
       rejectUnauthorized: false, // Allows self-signed certificates (for development)
     },
   },
