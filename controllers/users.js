@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { User, Blog } = require('../models');
+const { User } = require('../models');
 const tokenExtractor = require('../middleware/tokenExtractor');
 
 // Middleware to find a user by ID
@@ -16,14 +16,11 @@ const userFinderById = async (req, res, next) => {
   }
 };
 
-// GET /api/users: List all users, each showing the blogs they have added
+// GET /api/users: List all users
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
-      include: {
-        model: Blog,
-        attributes: ['title', 'author', 'url', 'likes'],
-      },
+      attributes: ['id', 'username', 'firstname', 'lastname', 'user_type', 'created_at'],
     });
     res.json(users);
   } catch (error) {
@@ -31,48 +28,16 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// GET /api/users/:id: Get a user's reading list with optional filters
+// GET /api/users/:id: Retrieve a user's details
 router.get('/:id', userFinderById, async (req, res, next) => {
-  const { read } = req.query; // Extract query parameter
-
   try {
-    // Filter condition for the query
-    const readFilter =
-      read === undefined
-        ? {} // No filter if the query parameter is not provided
-        : { read: read === 'true' }; // Convert "read" to boolean if provided
-
-    // Fetch the user's reading list with the optional read filter
-    const userWithReadingList = await User.findByPk(req.params.id, {
-      include: {
-        model: Blog,
-        as: 'readingList', // Match the alias defined in the association
-        attributes: ['id', 'url', 'title', 'author', 'likes', 'year'], // Blog attributes
-        through: {
-          attributes: ['read', 'id'], // Attributes from the join table (ReadingList)
-          where: readFilter, // Apply the read filter
-        },
-      },
-    });
-
-    // Format the response
     const userData = {
-      name: req.user.name,
+      id: req.user.id,
       username: req.user.username,
-      readings: userWithReadingList.readingList.map(blog => ({
-        id: blog.id,
-        url: blog.url,
-        title: blog.title,
-        author: blog.author,
-        likes: blog.likes,
-        year: blog.year,
-        readinglists: [
-          {
-            read: blog.reading_list.read, // Access the 'read' field from the join table
-            id: blog.reading_list.id, // Access the ID from the join table
-          },
-        ],
-      })),
+      firstname: req.user.firstname,
+      lastname: req.user.lastname,
+      user_type: req.user.user_type,
+      created_at: req.user.created_at,
     };
 
     res.json(userData);
@@ -84,22 +49,22 @@ router.get('/:id', userFinderById, async (req, res, next) => {
 // POST /api/users: Add a new user
 router.post('/', async (req, res, next) => {
   try {
-    const { username, name } = req.body;
+    const { username, firstname, lastname, user_type } = req.body;
 
-    if (!username || !name) {
-      const error = new Error('Username and name are required');
+    if (!username || !firstname || !lastname || !user_type) {
+      const error = new Error('Username, firstname, lastname, and user_type are required');
       error.name = 'ValidationError';
       throw error;
     }
 
-    const user = await User.create({ username, name });
+    const user = await User.create({ username, firstname, lastname, user_type });
     res.status(201).json(user);
   } catch (error) {
     next(error);
   }
 });
 
-// PUT /api/users/:username: Change username
+// PUT /api/users/:username: Change username (logged-in user only)
 router.put('/:username', tokenExtractor, async (req, res, next) => {
   try {
     const { newUsername } = req.body;
