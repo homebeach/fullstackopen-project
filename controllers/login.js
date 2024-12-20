@@ -50,7 +50,7 @@ router.post('/', async (request, response) => {
       token,
     });
 
-    response.status(200).send({ token, username: user.username, name: `${user.firstname} ${user.lastname}` });
+    response.status(200).send({ token, username: user.username, firstname: `${user.firstname}, lastname: ${user.lastname}` });
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: 'Something went wrong' });

@@ -94,24 +94,32 @@ router.put('/:username', tokenExtractor, async (req, res, next) => {
       return res.status(403).json({ error: 'Your account is disabled and cannot be modified' });
     }
 
+    let usernameChanged = false;
+    let passwordChanged = false;
+
     // Update the username if provided
     if (newUsername) {
       req.user.username = newUsername;
+      usernameChanged = true;
     }
 
     // Update the password if provided
     if (newPassword) {
-      if (newPassword.length < 8) {
-        return res.status(400).json({ error: 'Password must be at least 8 characters long' });
-      }
       const hashedPassword = await bcrypt.hash(newPassword, 10); // Hash the new password
       req.user.password = hashedPassword;
+      passwordChanged = true;
     }
 
     // Save the changes
     await req.user.save();
 
-    res.json({ message: 'User updated successfully', user: { username: req.user.username } });
+    // Build an informative response message
+    const messageParts = [];
+    if (usernameChanged) messageParts.push('Username updated');
+    if (passwordChanged) messageParts.push('Password updated');
+    const message = messageParts.length > 0 ? messageParts.join(' and ') : 'No changes were made';
+
+    res.json({ message, user: { username: req.user.username } });
   } catch (error) {
     next(error);
   }
