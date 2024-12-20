@@ -36,6 +36,10 @@ User.init({
     defaultValue: false,
     allowNull: false,
   },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: true,
+  },
 }, {
   sequelize,
   underscored: true,
