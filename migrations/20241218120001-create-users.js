@@ -30,9 +30,9 @@ module.exports = {
         allowNull: true,
       },
       user_type: {
-        type: DataTypes.ENUM('customer', 'librarian', 'admin'),
+        type: DataTypes.ENUM('Customer', 'Librarian', 'Admin'),
         allowNull: false,
-        defaultValue: 'customer',
+        defaultValue: 'Customer',
       },
       created_at: {
         type: DataTypes.DATE,

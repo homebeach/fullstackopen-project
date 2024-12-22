@@ -18,28 +18,28 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// POST /api/libraryItems: Add a new library item (only for librarians or admins)
-router.post('/', roleChecker(['librarian', 'admin']), async (req, res, next) => {
+// POST /api/libraryItems: Add new items (restricted to librarians or admins)
+router.post('/', roleChecker(['Librarian', 'Admin']), async (req, res, next) => {
   try {
-    const { title, authorOrArtist, publishedDate, genre, type } = req.body;
+    const libraryItems = req.body;
 
-    // Validation
-    if (!title || !authorOrArtist || !publishedDate || !genre || !type) {
+    if (!Array.isArray(libraryItems) || libraryItems.length === 0) {
+      return res.status(400).json({ error: 'Request body must be a non-empty array of library items' });
+    }
+
+    const invalidItems = libraryItems.filter(item =>
+      !item.title || !item.authorOrArtist || !item.publishedDate || !item.genre || !item.type
+    );
+
+    if (invalidItems.length > 0) {
       return res.status(400).json({
-        error: 'Title, author/artist, published date, genre, and type are required',
+        error: 'Each item must have title, author/artist, published date, genre, and type',
+        invalidItems,
       });
     }
 
-    // Create the new LibraryItem
-    const newItem = await LibraryItem.create({
-      title,
-      authorOrArtist,
-      publishedDate,
-      genre,
-      type,
-    });
-
-    res.status(201).json(newItem);
+    const newItems = await LibraryItem.bulkCreate(libraryItems, { validate: true });
+    res.status(201).json(newItems);
   } catch (error) {
     next(error);
   }

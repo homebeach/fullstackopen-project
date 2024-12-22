@@ -27,9 +27,9 @@ User.init({
     allowNull: true, // Optional field
   },
   userType: {
-    type: DataTypes.ENUM('customer', 'librarian', 'admin'),
+    type: DataTypes.ENUM('Customer', 'Librarian', 'Admin'),
     allowNull: false,
-    defaultValue: 'customer',
+    defaultValue: 'Customer',
   },
   disabled: {
     type: DataTypes.BOOLEAN,
