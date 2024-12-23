@@ -79,10 +79,17 @@ router.post('/', async (req, res, next) => {
   }
 });
 
-// PUT /api/users/:username: Change username or password (logged-in user only)
+// PUT /api/users/:username: Change user details (logged-in user only)
 router.put('/:username', tokenExtractor, async (req, res, next) => {
   try {
-    const { newUsername, newPassword } = req.body;
+    const {
+      newUsername,
+      newPassword,
+      firstname,
+      lastname,
+      otherNames,
+      userType, // Only editable by admins
+    } = req.body;
 
     // Ensure the logged-in user matches the target username
     if (req.user.username !== req.params.username) {
@@ -94,30 +101,59 @@ router.put('/:username', tokenExtractor, async (req, res, next) => {
       return res.status(403).json({ error: 'Your account is disabled and cannot be modified' });
     }
 
-    let usernameChanged = false;
-    let passwordChanged = false;
+    let changes = [];
 
     // Update the username if provided
     if (newUsername) {
       req.user.username = newUsername;
-      usernameChanged = true;
+      changes.push('Username updated');
     }
 
     // Update the password if provided
     if (newPassword) {
+      if (newPassword.length < 8) {
+        return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+      }
       const hashedPassword = await bcrypt.hash(newPassword, 10); // Hash the new password
       req.user.password = hashedPassword;
-      passwordChanged = true;
+      changes.push('Password updated');
+    }
+
+    // Update firstname if provided
+    if (firstname) {
+      req.user.firstname = firstname;
+      changes.push('First name updated');
+    }
+
+    // Update lastname if provided
+    if (lastname) {
+      req.user.lastname = lastname;
+      changes.push('Last name updated');
+    }
+
+    // Update otherNames if provided
+    if (otherNames) {
+      req.user.otherNames = otherNames;
+      changes.push('Other names updated');
+    }
+
+    // Update userType only if the user is an admin
+    if (userType && req.user.userType === 'Admin') {
+      if (!['Customer', 'Librarian', 'Admin'].includes(userType)) {
+        return res.status(400).json({ error: 'Invalid userType value' });
+      }
+      req.user.userType = userType;
+      changes.push('User type updated');
+    } else if (userType) {
+      return res.status(403).json({ error: 'Only admins can modify userType' });
     }
 
     // Save the changes
     await req.user.save();
 
-    // Build an informative response message
-    const messageParts = [];
-    if (usernameChanged) messageParts.push('Username updated');
-    if (passwordChanged) messageParts.push('Password updated');
-    const message = messageParts.length > 0 ? messageParts.join(' and ') : 'No changes were made';
+    // Build a response message
+    const message =
+      changes.length > 0 ? changes.join(', ') : 'No changes were made';
 
     res.json({ message, user: { username: req.user.username } });
   } catch (error) {

@@ -3,40 +3,42 @@ const { sequelize } = require('../util/db');
 
 class LibraryItem extends Model {}
 
-LibraryItem.init(
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    title: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    author: {
-      type: DataTypes.STRING,
-      allowNull: true, // Optional field
-    },
-    publishedDate: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    genre: {
-      type: DataTypes.STRING,
-      allowNull: true,
-    },
-    type: {
-      type: DataTypes.ENUM('Book', 'Magazine', 'CD', 'DVD', 'Blu-ray'),
-      allowNull: false,
-    },
+LibraryItem.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true,
   },
-  {
-    sequelize,
-    modelName: 'libraryItem',
-    underscored: true,
-    timestamps: true,
-  }
-);
+  title: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  authorArtist: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  publishedDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  genre: {
+    type: DataTypes.STRING,
+    allowNull: false,
+  },
+  type: {
+    type: DataTypes.ENUM('book', 'magazine', 'cd', 'dvd', 'blu-ray'),
+    allowNull: false,
+  },
+  copiesAvailable: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 1,
+  },
+}, {
+  sequelize,
+  underscored: true,
+  timestamps: true,
+  modelName: 'libraryItem',
+});
 
 module.exports = LibraryItem;
