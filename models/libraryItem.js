@@ -26,7 +26,7 @@ LibraryItem.init({
     allowNull: false,
   },
   type: {
-    type: DataTypes.ENUM('book', 'magazine', 'cd', 'dvd', 'blu-ray'),
+    type: DataTypes.ENUM('Book', 'Magazine', 'CD', 'DVD', 'Blu-ray'),
     allowNull: false,
   },
   copiesAvailable: {
