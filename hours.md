@@ -8,4 +8,5 @@
 | 20.12. | 6    | Salasanan lisääminen, users ja login routerien päivittäminen. LibraryItem lisääminen. |
 | 22.12. | 6    | LibraryItem-testaaminen ja debukkaaminen. Nimikkeiden lisäyksen ja poiston testaaminen. Enum-parantelua. |
 | 23.12. | 4    | Kaikki käyttäjätiedot muokattavaksi. LibraryItemiin lainattavissa oleva määrä. |
-| 24.12. | 4    | BorrowedItem lisääminen. BorrowedItemin router |
+| 24.12. | 4    | BorrowedItemin lisääminen. BorrowedItemin routerin toteutus. |
+| 26.12. | 2    | BorrowedItemin routerin korjaus ja testaaminen. |

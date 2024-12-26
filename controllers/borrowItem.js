@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { LibraryItem, BorrowedItem, User } = require('../models');
-const { tokenExtractor } = require('../util/middleware');
+const tokenExtractor = require('../middleware/tokenExtractor');
 
 // Borrow an item
 router.post('/:id/borrow', tokenExtractor, async (req, res, next) => {

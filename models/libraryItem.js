@@ -13,7 +13,7 @@ LibraryItem.init({
     type: DataTypes.STRING,
     allowNull: false,
   },
-  authorArtist: {
+  author: {
     type: DataTypes.STRING,
     allowNull: false,
   },

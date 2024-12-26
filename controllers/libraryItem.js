@@ -28,12 +28,12 @@ router.post('/', roleChecker(['Librarian', 'Admin']), async (req, res, next) => 
     }
 
     const invalidItems = libraryItems.filter(item =>
-      !item.title || !item.authorOrArtist || !item.publishedDate || !item.genre || !item.type
+      !item.title || !item.author || !item.publishedDate || !item.genre || !item.type
     );
 
     if (invalidItems.length > 0) {
       return res.status(400).json({
-        error: 'Each item must have title, author/artist, published date, genre, and type',
+        error: 'Each item must have title, author, published date, genre, and type',
         invalidItems,
       });
     }
