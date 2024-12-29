@@ -3,7 +3,6 @@ const router = express.Router();
 const { LibraryItem, BorrowedItem, User } = require('../models');
 const tokenExtractor = require('../middleware/tokenExtractor');
 
-// Borrow an item
 router.post('/:id/borrow', tokenExtractor, async (req, res, next) => {
   try {
     const userId = req.user.id;
@@ -14,7 +13,15 @@ router.post('/:id/borrow', tokenExtractor, async (req, res, next) => {
       return res.status(404).json({ error: 'Library item not found' });
     }
 
-    if (libraryItem.copiesAvailable < 1) {
+    // Count active borrow records for this item
+    const activeBorrowCount = await BorrowedItem.count({
+      where: {
+        libraryItemId,
+        returnDate: null, // Ensure we count only items not yet returned
+      },
+    });
+
+    if (activeBorrowCount >= libraryItem.copiesAvailable) {
       return res.status(400).json({ error: 'No copies available for borrowing' });
     }
 
@@ -23,10 +30,6 @@ router.post('/:id/borrow', tokenExtractor, async (req, res, next) => {
       userId,
       libraryItemId,
     });
-
-    // Decrement the copiesAvailable count
-    libraryItem.copiesAvailable -= 1;
-    await libraryItem.save();
 
     res.status(200).json({ message: 'Item borrowed successfully' });
   } catch (error) {
@@ -40,27 +43,24 @@ router.post('/:id/return', tokenExtractor, async (req, res, next) => {
     const userId = req.user.id;
     const libraryItemId = req.params.id;
 
+    // Find the borrowed item entry
     const borrowedItem = await BorrowedItem.findOne({
-      where: { userId, libraryItemId, returnDate: null },
+      where: { userId, libraryItemId, returnDate: null }, // Only find items not yet returned
     });
 
     if (!borrowedItem) {
-      return res.status(404).json({ error: 'Borrowed item not found' });
+      return res.status(404).json({ error: 'Borrowed item not found or already returned' });
     }
 
     // Update the returnDate
     borrowedItem.returnDate = new Date();
     await borrowedItem.save();
 
-    // Increment the copiesAvailable count
-    const libraryItem = await LibraryItem.findByPk(libraryItemId);
-    libraryItem.copiesAvailable += 1;
-    await libraryItem.save();
-
     res.status(200).json({ message: 'Item returned successfully' });
   } catch (error) {
     next(error);
   }
 });
+
 
 module.exports = router;
