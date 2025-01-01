@@ -1,0 +1,10 @@
+<!-- src/app/library-list/library-list.component.html -->
+<div>
+	<h2>Library Items</h2>
+	<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+	<ul>
+		<li *ngFor="let item of libraryItems">
+			<strong>{{ item.title }}</strong> by {{ item.author }}
+		</li>
+	</ul>
+</div>
