@@ -1,10 +1,18 @@
-<!-- src/app/library-list/library-list.component.html -->
 <div>
 	<h2>Library Items</h2>
 	<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 	<ul>
-		<li *ngFor="let item of libraryItems">
-			<strong>{{ item.title }}</strong> by {{ item.author }}
+		<li *ngFor="let item of libraryItems" class="library-item">
+			<h3>{{ item.title }}</h3>
+			<p><strong>Author:</strong> {{ item.author || 'Unknown' }}</p>
+			<p><strong>Published Date:</strong> {{ item.publishedDate | date:'longDate' }}</p>
+			<p><strong>Genre:</strong> {{ item.genre }}</p>
+			<p><strong>Type:</strong> {{ item.type }}</p>
+			<p><strong>Copies Available:</strong> {{ item.copiesAvailable }}</p>
+			<small class="metadata">
+				Created At: {{ item.createdAt | date:'short' }} |
+				Updated At: {{ item.updatedAt | date:'short' }}
+			</small>
 		</li>
 	</ul>
 </div>

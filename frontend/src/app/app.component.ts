@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { LibraryListComponent } from './library-list/library-list.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true, // AppComponent is a standalone component
+  imports: [LibraryListComponent], // Add LibraryListComponent here
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css'], // Fix: 'styleUrls' instead of 'styleUrl'
 })
 export class AppComponent {
   title = 'frontend';

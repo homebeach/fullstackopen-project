@@ -5,10 +5,7 @@ const tokenExtractor = require('../middleware/tokenExtractor');
 const roleChecker = require('../middleware/roleChecker'); // Middleware for role-based access
 const router = express.Router();
 
-// Middleware to check if the user is logged in and has the correct role
-router.use(tokenExtractor);
-
-// GET /api/libraryItems: Query all items in the library
+// GET /api/library: Query all items in the library
 router.get('/', async (req, res, next) => {
   try {
     const items = await LibraryItem.findAll();
@@ -17,6 +14,9 @@ router.get('/', async (req, res, next) => {
     next(error);
   }
 });
+
+// Middleware to check if the user is logged in and has the correct role
+router.use(tokenExtractor);
 
 // POST /api/libraryItems: Add new items (restricted to librarians or admins)
 router.post('/', roleChecker(['Librarian', 'Admin']), async (req, res, next) => {

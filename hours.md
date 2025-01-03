@@ -12,3 +12,4 @@
 | 26.12. | 2    | BorrowItemin routerin korjaus ja testaaminen. |
 | 29.12. | 2    | BorrowItemin routerin parantelua ja testaamista. |
 | 1.1. | 8  | Angularin opiskelua. Alustava frontend Angularilla |
+| 2.1. | 4  | Frontendin debukkaamista. Kirjaston nimikkeiden kyseleminen toimimaan laittaminen frontendin kautta. |
