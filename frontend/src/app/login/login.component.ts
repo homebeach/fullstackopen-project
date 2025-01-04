@@ -24,9 +24,17 @@ export class LoginComponent {
       password: this.password,
     };
 
-    this.http.post('https://fullstackopen-project-arik.onrender.com/api/login', loginData).subscribe({
+    //const url = 'https://fullstackopen-project-arik.onrender.com/api/login';
+    const url = 'http://localhost:3001/api/login';
+
+
+    this.http.post(url, loginData).subscribe({
       next: (response: any) => {
         const { token, username, firstname, lastname } = response;
+
+        console.log(token);
+        console.log(firstname);
+        console.log(lastname);
 
         // Store token in localStorage
         localStorage.setItem('token', token);

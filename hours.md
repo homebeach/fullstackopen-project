@@ -14,3 +14,4 @@
 | 1.1. | 8  | Angularin opiskelua. Alustava frontend Angularilla |
 | 2.1. | 4  | Frontendin debukkaamista. Kirjaston nimikkeiden kyseleminen toimimaan laittaminen frontendin kautta. |
 | 3.1. | 8  | Frontendin hostaaminen Renderiin. Alustava login-toteutus frontendiin. |
+| 4.1. | 4 | Login-debukkausta. CORS-ongelmien korjaamista. |
