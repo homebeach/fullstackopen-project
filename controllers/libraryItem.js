@@ -5,6 +5,7 @@ const tokenExtractor = require('../middleware/tokenExtractor');
 const roleChecker = require('../middleware/roleChecker'); // Middleware for role-based access
 const router = express.Router();
 const cors = require('cors');
+const app = express();
 
 // Enable CORS for all origins
 app.use(cors());

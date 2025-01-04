@@ -1,7 +1,7 @@
-// src/app/library.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { LibraryItem } from './library-item.model';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,7 @@ export class LibraryService {
 
   constructor(private http: HttpClient) {}
 
-  getLibraryItems(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+  getLibraryItems(): Observable<LibraryItem[]> {
+    return this.http.get<LibraryItem[]>(this.apiUrl);
   }
 }
