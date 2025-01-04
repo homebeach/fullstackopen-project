@@ -1,15 +1,16 @@
+const express = require('express');
+const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const express = require('express');
-const router = require('express').Router();
-const app = express();
-const cors = require('cors');
-
 const { SECRET } = require('../util/config');
 const { User, Session } = require('../models');
 
+const app = express();
+const router = express.Router();
+
 // Enable CORS for all origins
 app.use(cors());
+app.use(express.json()); // Parse JSON bodies
 
 router.post('/', async (request, response) => {
   const { username, password } = request.body;
