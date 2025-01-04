@@ -1,9 +1,14 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const router = require('express').Router();
+const app = express();
+const cors = require('cors');
 
 const { SECRET } = require('../util/config');
 const { User, Session } = require('../models');
+
+// Enable CORS for all origins
+app.use(cors());
 
 router.post('/', async (request, response) => {
   const { username, password } = request.body;
