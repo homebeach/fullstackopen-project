@@ -37,7 +37,7 @@ export class LoginComponent {
       password: this.password,
     };
 
-    const url = 'http://localhost:3001/api/login'; // Change this to your API endpoint if needed
+    const url = 'https://fullstackopen-project-arik.onrender.com/api/login'; // Change this to your API endpoint if needed
 
     console.log('Login request payload:', loginData); // Debug payload
 
