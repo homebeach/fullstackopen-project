@@ -1,0 +1,37 @@
+.menu-bar {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: #f5f5f5;
+	padding: 10px 20px;
+	border-bottom: 1px solid #ccc;
+}
+
+.menu-links a {
+	margin-right: 15px;
+	text-decoration: none;
+	color: #007bff;
+}
+
+.menu-links a.active {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.user-info {
+	font-size: 14px;
+}
+
+.logout-btn {
+	margin-left: 10px;
+	padding: 5px 10px;
+	background-color: #d9534f;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.logout-btn:hover {
+	background-color: #c9302c;
+}

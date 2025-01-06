@@ -16,3 +16,4 @@
 | 3.1. | 8  | Frontendin hostaaminen Renderiin. Alustava login-toteutus frontendiin. |
 | 4.1. | 4 | Login-debukkausta. CORS-ongelmien korjaamista. |
 | 5.1. | 2 | Login-redirect debukkaaminen ja korjaaminen. |
+| 6.1. | 4 | Ylävalikon alustava lisääminen. |

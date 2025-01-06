@@ -3,20 +3,27 @@ import { LoginComponent } from './login/login.component';
 import { LibraryListComponent } from './library-list/library-list.component';
 import { AuthGuard } from './auth.guard';
 import { RedirectGuard } from './redirect.guard';
-import { Component } from '@angular/core'; // For placeholder component
+import { MainLayoutComponent } from './main-layout/main-layout.component';
 
-@Component({
-  template: '',
-})
 export class PlaceholderComponent {}
 
 export const routes: Routes = [
+  // Redirect to login or default route
   {
     path: '',
     component: PlaceholderComponent,
     canActivate: [RedirectGuard],
-    pathMatch: 'full'
+    pathMatch: 'full',
   },
+  // Login route
   { path: 'login', component: LoginComponent },
-  { path: 'library-list', component: LibraryListComponent, canActivate: [AuthGuard] },
+  // Routes under the MainLayout with the global menu
+  {
+    path: '',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      { path: 'library-list', component: LibraryListComponent },
+    ],
+  },
 ];
