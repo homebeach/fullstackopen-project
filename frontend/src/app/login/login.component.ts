@@ -37,7 +37,11 @@ export class LoginComponent {
       password: this.password,
     };
 
-    const url = 'https://fullstackopen-project-arik.onrender.com/api/login'; // Change this to your API endpoint if needed
+    const urlRender = 'https://fullstackopen-project-arik.onrender.com/api/login'; // Change this to your API endpoint if needed
+
+
+    const url = 'http://localhost:3001/api/login';
+
 
     console.log('Login request payload:', loginData); // Debug payload
 
@@ -46,7 +50,10 @@ export class LoginComponent {
         console.log('Server response:', response); // Debug server response
 
         // Destructure response
-        const { token, username, firstname, lastname } = response;
+        const { token, username, firstname, lastname, borrowedItems } = response;
+
+        console.log("THIS IS BORROWEDITEMS");
+        console.log(borrowedItems);
 
         if (!token) {
           console.error('Token not found in response. Cannot authenticate.');
@@ -57,12 +64,14 @@ export class LoginComponent {
         console.log('Token:', token);
         console.log('Firstname:', firstname);
         console.log('Lastname:', lastname);
+        console.log('Borrowed Items:', borrowedItems);
 
-        // Store token and user details in localStorage
+        // Store token, user details, and borrowed items in localStorage
         localStorage.setItem('token', token);
         localStorage.setItem('username', username);
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
+        localStorage.setItem('borrowedItems', JSON.stringify(borrowedItems || []));
 
         // Navigate to the library list
         this.router.navigate(['/library-list']).then((success) => {

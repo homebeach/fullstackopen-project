@@ -4,11 +4,6 @@ const { LibraryItem } = require('../models');
 const tokenExtractor = require('../middleware/tokenExtractor');
 const roleChecker = require('../middleware/roleChecker'); // Middleware for role-based access
 const router = express.Router();
-const app = express();
-const cors = require('cors');
-
-// Enable CORS for all origins
-app.use(cors());
 
 // GET /api/library: Query all items in the library
 router.get('/', async (req, res, next) => {

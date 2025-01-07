@@ -1,0 +1,18 @@
+.borrow-button {
+	margin-top: 10px;
+	padding: 5px 10px;
+	background-color: #007bff;
+	color: white;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.borrow-button:disabled {
+	background-color: #ccc;
+	cursor: not-allowed;
+}
+
+.borrow-button:hover:not(:disabled) {
+	background-color: #0056b3;
+}

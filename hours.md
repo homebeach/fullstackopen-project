@@ -17,3 +17,4 @@
 | 4.1. | 4 | Login-debukkausta. CORS-ongelmien korjaamista. |
 | 5.1. | 2 | Login-redirect debukkaaminen ja korjaaminen. |
 | 6.1. | 4 | Ylävalikon alustava lisääminen. |
+| 7.1. | 10 | Logout-debukkausta ja alustavan lainaamistoiminnon toteuttaminen frontendiin. |

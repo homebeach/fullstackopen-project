@@ -1,8 +1,9 @@
+const { Sequelize } = require('sequelize');
 const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { SECRET } = require('../util/config');
-const { User, Session } = require('../models');
+const { User, Session, BorrowedItem } = require('../models');
 
 const router = express.Router();
 
@@ -51,7 +52,24 @@ router.post('/', async (request, response) => {
       token,
     });
 
-    response.status(200).send({ token, username: user.username, firstname: `${user.firstname}, lastname: ${user.lastname}` });
+    // Fetch borrowed item IDs for the user
+    const borrowedItems = await BorrowedItem.findAll({
+      where: { userId: user.id },
+      attributes: [
+        [Sequelize.fn('DISTINCT', Sequelize.col('library_item_id')), 'library_item_id']
+      ], // Fetch distinct library_item_id values
+      raw: true, // Return plain object results
+    });
+
+    const borrowedItemIds = borrowedItems.map((item) => item.library_item_id);
+
+    response.status(200).send({
+      token,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      borrowedItems: borrowedItemIds, // Include borrowed item IDs in the response
+    });
   } catch (error) {
     console.error(error);
     response.status(500).json({ error: 'Something went wrong' });
