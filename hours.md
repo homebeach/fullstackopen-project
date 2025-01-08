@@ -18,3 +18,4 @@
 | 5.1. | 2 | Login-redirect debukkaaminen ja korjaaminen. |
 | 6.1. | 4 | Ylävalikon alustava lisääminen. |
 | 7.1. | 10 | Logout-debukkausta ja alustavan lainaamistoiminnon toteuttaminen frontendiin. |
+| 8.1. | 8 | Linkkien debukkaus ja korjaus menu-barissa. Frontendin ja backendin toteutus My Borrowed Items -komponentille. |
