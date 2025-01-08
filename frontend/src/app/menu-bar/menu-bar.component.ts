@@ -14,27 +14,36 @@ export class MenuBarComponent {
   firstname: string = localStorage.getItem('firstname') || '';
   lastname: string = localStorage.getItem('lastname') || '';
   token: string = localStorage.getItem('token') || ''; // Add token property
-  logoutUrl: string = 'http://localhost:3001/api/logout';
   borrowedItems: string[] = [];
+  borrowedItemsUrl: string = 'http://localhost:3001/api/library/borrowed'; // API endpoint
+  logoutUrl: string = 'http://localhost:3001/api/logout';
 
   constructor(private router: Router, private http: HttpClient) {}
 
   ngOnInit(): void {
-    const borrowedItemsJson = localStorage.getItem('borrowedItems');
-    if (borrowedItemsJson) {
-      try {
-        const parsedItems = JSON.parse(borrowedItemsJson);
-        if (Array.isArray(parsedItems)) {
-          this.borrowedItems = parsedItems;
-        } else {
-          console.warn('Borrowed items data is not an array. Defaulting to empty array.');
-          this.borrowedItems = [];
-        }
-      } catch (error) {
-        console.error('Error parsing borrowed items from localStorage:', error);
-        this.borrowedItems = [];
-      }
+    this.loadBorrowedItems();
+  }
+
+  loadBorrowedItems(): void {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.warn('No token found, skipping borrowed items fetch');
+      return;
     }
+
+    this.http.get<any[]>(this.borrowedItemsUrl, {
+      headers: { Authorization: `Bearer ${token}` },
+    }).subscribe({
+      next: (response) => {
+        // Save fetched borrowed items to localStorage
+        this.borrowedItems = response.map((item) => item.title); // Or map to desired properties
+        localStorage.setItem('borrowedItems', JSON.stringify(this.borrowedItems));
+      },
+      error: (err) => {
+        console.error('Error fetching borrowed items:', err);
+        alert('Failed to load borrowed items.');
+      },
+    });
   }
 
   logout(): void {
@@ -53,13 +62,7 @@ export class MenuBarComponent {
     }).subscribe({
       next: () => {
         console.log('Logged out successfully');
-        this.router.navigate(['/login']).then((success) => {
-          if (success) {
-            console.log('Navigated to login page');
-          } else {
-            console.error('Failed to navigate to login page');
-          }
-        });
+        this.router.navigate(['/login']);
       },
       error: (err) => {
         console.error('Logout error:', err);

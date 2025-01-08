@@ -7,6 +7,11 @@
 	border-bottom: 1px solid #ccc;
 }
 
+.menu-links {
+	display: flex;
+	align-items: center;
+}
+
 .menu-links a {
 	margin-right: 15px;
 	text-decoration: none;

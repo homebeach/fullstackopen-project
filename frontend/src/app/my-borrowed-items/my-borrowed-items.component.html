@@ -1,0 +1,16 @@
+<div>
+	<h1>My Borrowed Items</h1>
+	<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+	<div *ngIf="!borrowedItems.length && !errorMessage">
+		<p>No borrowed items found.</p>
+	</div>
+	<ul *ngIf="borrowedItems.length">
+		<li *ngFor="let item of borrowedItems" class="borrowed-item">
+			<h2>{{ item.title }}</h2>
+			<p><strong>Author:</strong> {{ item.author || 'Unknown' }}</p>
+			<p><strong>Genre:</strong> {{ item.genre }}</p>
+			<p><strong>Type:</strong> {{ item.type }}</p>
+			<p><strong>Published Date:</strong> {{ item.publishedDate | date: 'longDate' }}</p>
+		</li>
+	</ul>
+</div>

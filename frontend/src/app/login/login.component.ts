@@ -52,9 +52,6 @@ export class LoginComponent {
         // Destructure response
         const { token, username, firstname, lastname, borrowedItems } = response;
 
-        console.log("THIS IS BORROWEDITEMS");
-        console.log(borrowedItems);
-
         if (!token) {
           console.error('Token not found in response. Cannot authenticate.');
           this.errorMessage = 'Authentication failed. Please try again.';

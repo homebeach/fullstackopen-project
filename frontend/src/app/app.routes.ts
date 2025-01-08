@@ -4,6 +4,7 @@ import { LibraryListComponent } from './library-list/library-list.component';
 import { AuthGuard } from './auth.guard';
 import { RedirectGuard } from './redirect.guard';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
+import { MyBorrowedItemsComponent } from './my-borrowed-items/my-borrowed-items.component';
 
 export class PlaceholderComponent {}
 
@@ -24,6 +25,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'library-list', component: LibraryListComponent },
+      { path: 'borrowed', component: MyBorrowedItemsComponent }, // New route added here
     ],
   },
 ];

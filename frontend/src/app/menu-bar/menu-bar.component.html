@@ -1,7 +1,9 @@
 <div class="menu-bar">
 	<div class="menu-links">
 		<a routerLink="/library-list" routerLinkActive="active">Library List</a>
+		<a routerLink="/borrowed" routerLinkActive="active">My Borrowed Items</a>
 	</div>
+
 	<div class="user-info">
 		Logged in as: {{ firstname }} {{ lastname }}
 		<button class="logout-btn" (click)="logout()">Logout</button>
@@ -9,6 +11,7 @@
 			<p><strong>Token:</strong> {{ token }}</p> <!-- Display the token -->
 		</div>
 	</div>
+
 	<div class="borrowed-items">
 		<h4>Borrowed Items:</h4>
 		<ul>
