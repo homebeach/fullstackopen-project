@@ -7,7 +7,6 @@ const router = express.Router();
 // Use tokenExtractor middleware to extract token and user
 router.delete('/', tokenExtractor, async (req, res) => {
   try {
-    console.log("THIS IS DELETE!");
     // Remove the session from the database using the token
     await Session.destroy({ where: { token: req.token } });
 

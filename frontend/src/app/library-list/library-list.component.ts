@@ -66,8 +66,16 @@ export class LibraryListComponent implements OnInit {
         // Update the item's availability in the UI
         const borrowedItem = this.libraryItems.find((item) => item.id === itemId);
         if (borrowedItem) {
-          borrowedItem.copiesAvailable = Math.max(borrowedItem.copiesAvailable - 1, 0);
+          borrowedItem.copiesAvailable -= 1; // Decrease the available copies count
         }
+
+        // Add the borrowed item ID to the borrowedItems array
+        this.borrowedItems.push(itemId.toString());
+
+        // Update localStorage
+        localStorage.setItem('borrowedItems', JSON.stringify(this.borrowedItems));
+
+        console.log(`Updated borrowedItems: ${this.borrowedItems}`);
       },
       error: (error) => {
         console.error('Failed to borrow item:', error);
@@ -82,9 +90,11 @@ export class LibraryListComponent implements OnInit {
     });
   }
 
-    isItemBorrowed(itemId: string): boolean {
-    // Check if the item ID is already in the borrowedItems array
-      return this.borrowedItems.includes(itemId);
-    }
+  isItemBorrowed(itemId: number): boolean {
+    // Ensure both itemId and borrowedItems elements are strings for comparison
+    const borrowedItemsAsStrings = this.borrowedItems.map((id) => id.toString());
+    const isBorrowed = borrowedItemsAsStrings.includes(itemId.toString());
+    return isBorrowed;
+  }
 
 }

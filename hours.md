@@ -19,3 +19,4 @@
 | 6.1. | 4 | Ylävalikon alustava lisääminen. |
 | 7.1. | 10 | Logout-debukkausta ja alustavan lainaamistoiminnon toteuttaminen frontendiin. |
 | 8.1. | 8 | Linkkien debukkaus ja korjaus menu-barissa. Frontendin ja backendin toteutus My Borrowed Items -komponentille. |
+| 9.1. | 8 | Palautustoiminnon toteuttaminen. Lainaamisnapin logiikan debukkaus ja korjaus. CopiesAvailablen toteuttaminen backendiin siten, että se perustuu lainassa olevien teosten määrään.  |

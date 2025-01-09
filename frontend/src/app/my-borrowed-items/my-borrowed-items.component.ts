@@ -44,4 +44,38 @@ export class MyBorrowedItemsComponent implements OnInit {
       },
     });
   }
+
+  returnItem(itemId: number): void {
+    const url = `http://localhost:3001/api/borrowItem/${itemId}/return`;
+
+    // Retrieve the token from localStorage
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found. User is not authenticated.');
+      this.errorMessage = 'Please log in to borrow items.';
+      return;
+    }
+
+    // Set headers with the token
+    const headers = {
+      Authorization: `Bearer ${token}`,
+    };
+
+    this.http.post(url, {}, { headers }).subscribe({
+      next: () => {
+        console.log(`Item with ID ${itemId} returned successfully`);
+        this.fetchBorrowedItems();
+      },
+      error: (error) => {
+        console.error('Failed to borrow item:', error);
+
+        // Display appropriate error message
+        if (error.status === 401) {
+          this.errorMessage = 'Unauthorized. Please log in again.';
+        } else {
+          this.errorMessage = 'Could not return the item. Please try again.';
+        }
+      },
+    });
+  }
 };

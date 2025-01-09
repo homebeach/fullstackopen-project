@@ -11,6 +11,10 @@
 			<p><strong>Genre:</strong> {{ item.genre }}</p>
 			<p><strong>Type:</strong> {{ item.type }}</p>
 			<p><strong>Published Date:</strong> {{ item.publishedDate | date: 'longDate' }}</p>
+			<button (click)="returnItem(item.id)"
+				class="return-button">
+				Return
+			</button>
 		</li>
 	</ul>
 </div>

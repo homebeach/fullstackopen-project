@@ -1,5 +1,6 @@
 // routes/libraryItem.js
 const express = require('express');
+const { Sequelize } = require('sequelize');
 const { LibraryItem, BorrowedItem } = require('../models');
 const tokenExtractor = require('../middleware/tokenExtractor');
 const roleChecker = require('../middleware/roleChecker'); // Middleware for role-based access
@@ -11,7 +12,27 @@ router.use(tokenExtractor);
 // GET /api/library: Query all items in the library
 router.get('/', async (req, res, next) => {
   try {
-    const items = await LibraryItem.findAll();
+    const items = await LibraryItem.findAll({
+      attributes: [
+        'id',
+        'title',
+        'author',
+        'publishedDate',
+        'genre',
+        'type',
+        ['copies_available', 'totalCopiesAvailable'], // Alias for `copies_available`
+        [
+          Sequelize.literal(`"libraryItem"."copies_available" - (
+            SELECT COUNT(*)
+            FROM borrowed_items
+            WHERE borrowed_items.library_item_id = "libraryItem".id
+              AND borrowed_items.return_date IS NULL
+          )`),
+          'copiesAvailable', // Renaming `dynamicCopiesAvailable` to `copiesAvailable`
+        ],
+      ],
+    });
+
     res.json(items);
   } catch (error) {
     next(error);
