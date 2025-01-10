@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule for Angular directives
 import { HttpClient } from '@angular/common/http'; // Import HttpClient for API requests
 import { LibraryService } from '../library.service';
+import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
   selector: 'app-library-list',
@@ -14,6 +15,7 @@ export class LibraryListComponent implements OnInit {
   libraryItems: any[] = [];
   errorMessage: string = '';
   borrowedItems: string[] = []; // Array to store borrowed item IDs
+  baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
   constructor(
     private libraryService: LibraryService,
@@ -30,7 +32,7 @@ export class LibraryListComponent implements OnInit {
     );
   }
 
-    loadBorrowedItems(): void {
+  loadBorrowedItems(): void {
     // Retrieve borrowed items from localStorage
     const borrowedItemsJson = localStorage.getItem('borrowedItems');
     if (borrowedItemsJson) {
@@ -44,7 +46,7 @@ export class LibraryListComponent implements OnInit {
   }
 
   borrowItem(itemId: number): void {
-    const url = `http://localhost:3001/api/borrowItem/${itemId}/borrow`;
+    const url = `${this.baseUrl}/api/borrowItem/${itemId}/borrow`; // Use baseUrl from environment
 
     // Retrieve the token from localStorage
     const token = localStorage.getItem('token');
@@ -96,5 +98,4 @@ export class LibraryListComponent implements OnInit {
     const isBorrowed = borrowedItemsAsStrings.includes(itemId.toString());
     return isBorrowed;
   }
-
 }

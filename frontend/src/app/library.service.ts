@@ -2,12 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LibraryItem } from './library-item.model';
+import { environment } from '../environments/environment'; // Import environment file
 
 @Injectable({
   providedIn: 'root',
 })
 export class LibraryService {
-  private apiUrl = 'https://fullstackopen-project-arik.onrender.com/api/library';
+  private apiUrl = `${environment.apiBaseUrl}/api/library`; // Use base URL from environment
 
   constructor(private http: HttpClient) {}
 

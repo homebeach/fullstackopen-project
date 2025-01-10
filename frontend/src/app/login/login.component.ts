@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,7 @@ export class LoginComponent {
   username: string = '';
   password: string = '';
   errorMessage: string = '';
+  baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
   constructor(private http: HttpClient, private router: Router) {
     // Debugging router events
@@ -37,11 +39,7 @@ export class LoginComponent {
       password: this.password,
     };
 
-    const urlRender = 'https://fullstackopen-project-arik.onrender.com/api/login'; // Change this to your API endpoint if needed
-
-
-    const url = 'http://localhost:3001/api/login';
-
+    const url = `${this.baseUrl}/api/login`; // Use baseUrl from environment
 
     console.log('Login request payload:', loginData); // Debug payload
 

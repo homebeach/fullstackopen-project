@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { RouterModule } from '@angular/router'; // Import RouterModule
 import { CommonModule } from '@angular/common'; // Import CommonModule for structural directives
+import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
   selector: 'app-menu-bar',
@@ -16,6 +17,7 @@ export class MenuBarComponent {
   lastname: string = localStorage.getItem('lastname') || '';
   token: string = localStorage.getItem('token') || '';
   borrowedItems: string[] = JSON.parse(localStorage.getItem('borrowedItems') || '[]'); // Parse borrowed items from localStorage
+  baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
   constructor(private router: Router, private http: HttpClient) {}
 
@@ -25,7 +27,7 @@ export class MenuBarComponent {
       return;
     }
 
-    const logoutUrl = 'http://localhost:3001/api/logout'; // API endpoint for logout
+    const logoutUrl = `${this.baseUrl}/api/logout`; // Use baseUrl from environment
 
     this.http.delete(logoutUrl, {
       headers: { Authorization: `Bearer ${this.token}` },

@@ -16,9 +16,7 @@
             "outputPath": "dist/frontend",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "zone.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": [
               {
@@ -26,9 +24,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": [],
             "server": "src/main.server.ts",
             "outputMode": "server",
@@ -38,6 +34,12 @@
           },
           "configurations": {
             "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
               "budgets": [
                 {
                   "type": "initial",
@@ -53,6 +55,12 @@
               "outputHashing": "all"
             },
             "development": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.ts"
+                }
+              ],
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true
@@ -78,10 +86,7 @@
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
           "options": {
-            "polyfills": [
-              "zone.js",
-              "zone.js/testing"
-            ],
+            "polyfills": ["zone.js", "zone.js/testing"],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
               {
@@ -89,9 +94,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/styles.css"
-            ],
+            "styles": ["src/styles.css"],
             "scripts": []
           }
         }

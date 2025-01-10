@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common'; // Import CommonModule for Angular pipes like date
+import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
   selector: 'app-my-borrowed-items',
@@ -12,6 +13,7 @@ import { CommonModule } from '@angular/common'; // Import CommonModule for Angul
 export class MyBorrowedItemsComponent implements OnInit {
   borrowedItems: any[] = [];
   errorMessage: string = '';
+  baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +33,9 @@ export class MyBorrowedItemsComponent implements OnInit {
       Authorization: `Bearer ${token}`,
     };
 
-    this.http.get<any[]>('http://localhost:3001/api/library/borrowed', { headers }).subscribe({
+    const url = `${this.baseUrl}/api/library/borrowed`; // Use baseUrl from environment
+
+    this.http.get<any[]>(url, { headers }).subscribe({
       next: (data) => {
         this.borrowedItems = data;
 
@@ -46,13 +50,13 @@ export class MyBorrowedItemsComponent implements OnInit {
   }
 
   returnItem(itemId: number): void {
-    const url = `http://localhost:3001/api/borrowItem/${itemId}/return`;
+    const url = `${this.baseUrl}/api/borrowItem/${itemId}/return`; // Use baseUrl from environment
 
     // Retrieve the token from localStorage
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found. User is not authenticated.');
-      this.errorMessage = 'Please log in to borrow items.';
+      this.errorMessage = 'Please log in to return items.';
       return;
     }
 
@@ -67,7 +71,7 @@ export class MyBorrowedItemsComponent implements OnInit {
         this.fetchBorrowedItems();
       },
       error: (error) => {
-        console.error('Failed to borrow item:', error);
+        console.error('Failed to return item:', error);
 
         // Display appropriate error message
         if (error.status === 401) {
@@ -78,4 +82,4 @@ export class MyBorrowedItemsComponent implements OnInit {
       },
     });
   }
-};
+}
