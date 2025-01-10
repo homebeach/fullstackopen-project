@@ -2,14 +2,22 @@
 	<h1>Login</h1>
 	<form (submit)="onSubmit()">
 		<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
 		<div>
 			<label for="username">Username:</label>
 			<input id="username" [(ngModel)]="username" name="username" required />
 		</div>
+
 		<div>
 			<label for="password">Password:</label>
 			<input id="password" type="password" [(ngModel)]="password" name="password" required />
 		</div>
+
 		<button type="submit">Login</button>
 	</form>
+
+	<!-- Link to the Create User page -->
+	<div class="create-user-link">
+		<p>Don't have an account? <a [routerLink]="['/create-user']">Create one</a></p>
+	</div>
 </div>

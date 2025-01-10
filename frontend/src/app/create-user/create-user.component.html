@@ -1,0 +1,41 @@
+<div class="create-user-container">
+	<h1>Create New User</h1>
+
+	<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+		<div>
+			<label for="username">Username:</label>
+			<input id="username" formControlName="username" type="text" />
+		</div>
+
+		<div>
+			<label for="firstname">First Name:</label>
+			<input id="firstname" formControlName="firstname" type="text" />
+		</div>
+
+		<div>
+			<label for="lastname">Last Name:</label>
+			<input id="lastname" formControlName="lastname" type="text" />
+		</div>
+
+		<div>
+			<label for="user_type">User Type:</label>
+			<select id="user_type" formControlName="user_type">
+				<option value="" disabled>Select a user type</option>
+				<option value="Customer">Customer</option>
+				<option value="Librarian">Librarian</option>
+				<option value="Admin">Admin</option>
+			</select>
+		</div>
+
+		<div>
+			<label for="password">Password:</label>
+			<input id="password" formControlName="password" type="password" />
+		</div>
+
+		<button type="submit" [disabled]="userForm.invalid">Create User</button>
+	</form>
+
+	<!-- Success and error messages -->
+	<div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+	<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+</div>

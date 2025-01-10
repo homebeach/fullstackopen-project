@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
+import { Router, RouterModule, NavigationStart, NavigationEnd, NavigationError } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterModule], // Import RouterModule here
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
