@@ -3,6 +3,9 @@ const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const tokenExtractor = require('../middleware/tokenExtractor');
 
+// Middleware to check if the user is logged in and has the correct role
+router.use(tokenExtractor);
+
 // Middleware to find a user by ID
 const userFinderById = async (req, res, next) => {
   try {
@@ -10,7 +13,7 @@ const userFinderById = async (req, res, next) => {
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
-    req.user = user; // Attach the user to the request
+    req.targetUser = user; // Attach the target user to `req.targetUser`
     next();
   } catch (error) {
     next(error);
@@ -88,7 +91,7 @@ router.put('/:username', tokenExtractor, async (req, res, next) => {
       firstname,
       lastname,
       otherNames,
-      userType, // Only editable by admins
+      userType, // Only editable based on permissions
     } = req.body;
 
     // Ensure the logged-in user matches the target username
@@ -137,15 +140,26 @@ router.put('/:username', tokenExtractor, async (req, res, next) => {
       changes.push('Other names updated');
     }
 
-    // Update userType only if the user is an admin
-    if (userType && req.user.userType === 'Admin') {
-      if (!['Customer', 'Librarian', 'Admin'].includes(userType)) {
-        return res.status(400).json({ error: 'Invalid userType value' });
+    // Update userType based on role permissions
+    if (userType) {
+      if (req.user.userType === 'Admin') {
+        // Admins can update to any valid userType
+        if (!['Customer', 'Librarian', 'Admin'].includes(userType)) {
+          return res.status(400).json({ error: 'Invalid userType value' });
+        }
+        req.user.userType = userType;
+        changes.push('User type updated');
+      } else if (req.user.userType === 'Librarian') {
+        // Librarians can only update Customer to Librarian
+        if (req.user.userType !== 'Customer' || userType !== 'Librarian') {
+          return res.status(403).json({ error: 'Librarians can only update Customers to Librarian' });
+        }
+        req.user.userType = userType;
+        changes.push('User type updated');
+      } else {
+        // Customers cannot update userType
+        return res.status(403).json({ error: 'You do not have permission to update userType' });
       }
-      req.user.userType = userType;
-      changes.push('User type updated');
-    } else if (userType) {
-      return res.status(403).json({ error: 'Only admins can modify userType' });
     }
 
     // Save the changes
@@ -156,6 +170,40 @@ router.put('/:username', tokenExtractor, async (req, res, next) => {
       changes.length > 0 ? changes.join(', ') : 'No changes were made';
 
     res.json({ message, user: { username: req.user.username } });
+  } catch (error) {
+    next(error);
+  }
+});
+
+// DELETE /api/users/:id: Delete a user by ID (Librarian can delete Customer, Admin can delete any)
+router.delete('/:id', tokenExtractor, userFinderById, async (req, res, next) => {
+  try {
+    console.log('Logged-in user:', req.authUser);
+    console.log('Target user:', req.targetUser);
+
+    // Check if the logged-in user is an Admin
+    if (req.authUser.userType === 'Admin') {
+      // Admins can delete any user
+      await req.targetUser.destroy();
+      return res.status(204).send(); // No content response for successful deletion
+    }
+
+    // Check if the logged-in user is a Librarian
+    if (req.authUser.userType === 'Librarian') {
+      // Librarians can only delete Customers
+      if (req.targetUser.userType !== 'Customer') {
+        return res
+          .status(403)
+          .json({ error: 'Librarians can only delete Customers' });
+      }
+      await req.targetUser.destroy();
+      return res.status(204).send(); // No content response for successful deletion
+    }
+
+    // If neither Admin nor Librarian, deny access
+    return res
+      .status(403)
+      .json({ error: 'You do not have permission to delete this user' });
   } catch (error) {
     next(error);
   }

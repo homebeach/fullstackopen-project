@@ -87,4 +87,19 @@ export class UserService {
       { headers }
     );
   }
+
+  /**
+   * Delete a user by ID.
+   * @param id - The ID of the user to be deleted.
+   */
+  deleteUser(id: number): Observable<void> {
+    const token = localStorage.getItem('token');
+
+    if (!token) {
+      throw new Error('No token found');
+    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<void>(`${this.apiUrl}/${id}`, { headers });
+  }
 }

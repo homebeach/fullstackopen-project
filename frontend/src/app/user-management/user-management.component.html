@@ -16,6 +16,7 @@
 				<th>Last Name</th>
 				<th>User Type</th>
 				<th>Created At</th>
+				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -26,6 +27,12 @@
 				<td>{{ user.lastname }}</td>
 				<td>{{ user.user_type }}</td>
 				<td>{{ user.created_at | date: 'short' }}</td>
+				<td>
+					<!-- Show delete button based on user role and permissions -->
+					<button *ngIf="canDelete(user)" (click)="confirmDelete(user.id)">
+						Delete
+					</button>
+				</td>
 			</tr>
 		</tbody>
 	</table>

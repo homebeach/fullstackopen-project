@@ -21,4 +21,4 @@
 | 8.1. | 8 | Linkkien debukkaus ja korjaus menu-barissa. Frontendin ja backendin toteutus My Borrowed Items -komponentille. |
 | 9.1. | 8 | Palautustoiminnon toteuttaminen. Lainaamisnapin logiikan debukkaus ja korjaus. CopiesAvailablen toteuttaminen backendiin siten, että se perustuu lainassa olevien teosten määrään.  |
 | 10.1. | 6 | URL:n haku environment-määrityksistä. Mahdollisuus luoda käyttäjiä käyttöliittymän kautta. |
-| 11.1. | 6 | Koodin refaktorointia ja parantelua. Käyttäjien hallinnan lisääminen. |
+| 11.1. | 10 | Koodin refaktorointia ja parantelua. Käyttäjien hallinnan lisääminen. Käyttäjien poistaminen. |

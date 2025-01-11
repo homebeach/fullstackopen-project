@@ -30,7 +30,7 @@ const tokenExtractor = async (req, res, next) => {
       return res.status(403).json({ error: 'User is disabled' });
     }
 
-    req.user = user; // Attach the user object to the request
+    req.authUser = user; // Attach the logged-in user object to `req.authUser`
     req.token = token; // Optionally attach the token to the request
     next();
   } catch (error) {
