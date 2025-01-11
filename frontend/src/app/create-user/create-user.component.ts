@@ -1,13 +1,12 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { environment } from '../../environments/environment';
+import { UserService } from '../services/user.service'; // Import UserService
 
 @Component({
   selector: 'app-create-user',
   standalone: true, // Standalone component
-  imports: [CommonModule, ReactiveFormsModule], // Import ReactiveFormsModule here
+  imports: [CommonModule, ReactiveFormsModule], // Import ReactiveFormsModule
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css'],
 })
@@ -16,7 +15,7 @@ export class CreateUserComponent {
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private fb: FormBuilder, private http: HttpClient) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     // Initialize the form
     this.userForm = this.fb.group({
       username: ['', [Validators.required]],
@@ -34,9 +33,9 @@ export class CreateUserComponent {
     }
 
     const userData = this.userForm.value; // Get form data
-    const apiUrl = `${environment.apiBaseUrl}/api/users`; // API endpoint
 
-    this.http.post(apiUrl, userData).subscribe({
+    // Use UserService to create a new user
+    this.userService.addUser(userData).subscribe({
       next: (response) => {
         this.successMessage = 'User created successfully!';
         this.errorMessage = '';

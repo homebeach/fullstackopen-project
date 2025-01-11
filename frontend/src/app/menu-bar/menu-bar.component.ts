@@ -16,6 +16,7 @@ export class MenuBarComponent {
   firstname: string = localStorage.getItem('firstname') || '';
   lastname: string = localStorage.getItem('lastname') || '';
   token: string = localStorage.getItem('token') || '';
+  userType: string = localStorage.getItem('userType') || ''; // Add userType from localStorage
   borrowedItems: string[] = JSON.parse(localStorage.getItem('borrowedItems') || '[]'); // Parse borrowed items from localStorage
   baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
@@ -29,12 +30,13 @@ export class MenuBarComponent {
 
     const logoutUrl = `${this.baseUrl}/api/logout`; // Use baseUrl from environment
 
+    localStorage.clear();
+
     this.http.delete(logoutUrl, {
       headers: { Authorization: `Bearer ${this.token}` },
     }).subscribe({
       next: () => {
         console.log('Logged out successfully');
-        localStorage.clear();
         this.router.navigate(['/login']).then((success) => {
           if (success) {
             console.log('Navigated to login page');
@@ -47,5 +49,9 @@ export class MenuBarComponent {
         console.error('Logout error:', err);
       },
     });
+  }
+
+  isLibrarianOrAdmin(): boolean {
+    return this.userType === 'Librarian' || this.userType === 'Admin';
   }
 }

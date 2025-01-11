@@ -1,0 +1,37 @@
+<div class="user-management-container">
+	<h1>User Management</h1>
+
+	<!-- Display error message if any -->
+	<div *ngIf="errorMessage" class="error-message">
+		{{ errorMessage }}
+	</div>
+
+	<!-- Table to list users -->
+	<table class="user-table" *ngIf="users.length > 0">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>User Type</th>
+				<th>Created At</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let user of users">
+				<td>{{ user.id }}</td>
+				<td>{{ user.username }}</td>
+				<td>{{ user.firstname }}</td>
+				<td>{{ user.lastname }}</td>
+				<td>{{ user.user_type }}</td>
+				<td>{{ user.created_at | date: 'short' }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<!-- Message when no users are found -->
+	<div *ngIf="users.length === 0 && !errorMessage" class="no-users">
+		No users found.
+	</div>
+</div>

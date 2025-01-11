@@ -1,0 +1,37 @@
+.user-management-container {
+	padding: 20px;
+	font-family: Arial, sans-serif;
+}
+
+h1 {
+	text-align: center;
+}
+
+.error-message {
+	color: red;
+	text-align: center;
+	margin: 10px 0;
+}
+
+.user-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin: 20px 0;
+}
+
+.user-table th,
+.user-table td {
+	border: 1px solid #ddd;
+	padding: 8px;
+	text-align: left;
+}
+
+.user-table th {
+	background-color: #f4f4f4;
+}
+
+.no-users {
+	text-align: center;
+	color: #666;
+	margin-top: 20px;
+}

@@ -48,7 +48,7 @@ export class LoginComponent {
         console.log('Server response:', response); // Debug server response
 
         // Destructure response
-        const { token, username, firstname, lastname, borrowedItems } = response;
+        const { token, username, firstname, lastname, userType, borrowedItems } = response;
 
         if (!token) {
           console.error('Token not found in response. Cannot authenticate.');
@@ -59,6 +59,7 @@ export class LoginComponent {
         console.log('Token:', token);
         console.log('Firstname:', firstname);
         console.log('Lastname:', lastname);
+        console.log('Usertype:', userType);
         console.log('Borrowed Items:', borrowedItems);
 
         // Store token, user details, and borrowed items in localStorage
@@ -66,6 +67,7 @@ export class LoginComponent {
         localStorage.setItem('username', username);
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
+        localStorage.setItem('userType', userType);
         localStorage.setItem('borrowedItems', JSON.stringify(borrowedItems || []));
 
         // Navigate to the library list

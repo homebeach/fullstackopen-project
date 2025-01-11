@@ -68,6 +68,7 @@ router.post('/', async (request, response) => {
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,
+      userType: user.userType,
       borrowedItems: borrowedItemIds, // Include borrowed item IDs in the response
     });
   } catch (error) {

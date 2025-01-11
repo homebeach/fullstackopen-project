@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule for Angular directives
 import { HttpClient } from '@angular/common/http'; // Import HttpClient for API requests
-import { LibraryService } from '../library.service';
+import { LibraryService } from '../services/library.service';
 import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
