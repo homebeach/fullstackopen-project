@@ -5,7 +5,7 @@ const tokenExtractor = require('../middleware/tokenExtractor');
 
 router.post('/:id/borrow', tokenExtractor, async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.authUser.id;
     const libraryItemId = req.params.id;
 
     const libraryItem = await LibraryItem.findByPk(libraryItemId);
@@ -40,7 +40,7 @@ router.post('/:id/borrow', tokenExtractor, async (req, res, next) => {
 // Return an item
 router.post('/:id/return', tokenExtractor, async (req, res, next) => {
   try {
-    const userId = req.user.id;
+    const userId = req.authUser.id;
     const libraryItemId = req.params.id;
 
     // Find the borrowed item entry

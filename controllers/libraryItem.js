@@ -41,7 +41,8 @@ router.get('/', async (req, res, next) => {
 
 router.get('/borrowed', tokenExtractor, async (req, res, next) => {
   try {
-    const userId = req.user.id; // Extract user ID from the token
+
+    const userId = req.authUser.id; // Extract user ID from the token
 
     const borrowedItems = await BorrowedItem.findAll({
       where: {
