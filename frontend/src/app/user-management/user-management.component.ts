@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, User } from '../services/user.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router'; // Import RouterModule
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterModule], // Add RouterModule here
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.css'],
 })

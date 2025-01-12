@@ -51,15 +51,40 @@ router.get('/:id', userFinderById, async (req, res, next) => {
 });
 
 // POST /api/users: Add a new user
-router.post('/', async (req, res, next) => {
+router.post('/', tokenExtractor, async (req, res, next) => {
   try {
     const { username, firstname, lastname, user_type, password } = req.body;
 
     // Validate input fields
-    if (!username || !firstname || !lastname || !user_type || !password) {
-      const error = new Error('Username, firstname, lastname, user_type, and password are required');
-      error.name = 'ValidationError';
-      throw error;
+    if (!username || !firstname || !lastname || !password) {
+      return res.status(400).json({ error: 'Username, firstname, lastname, and password are required' });
+    }
+
+    // Default to 'Customer' if no user type is provided
+    let userType = user_type || 'Customer';
+
+    // Check the role of the logged-in user and set userType constraints
+    if (req.authUser) {
+      if (req.authUser.userType === 'Customer') {
+        // Customers can only create 'Customer' accounts
+        userType = 'Customer';
+      } else if (req.authUser.userType === 'Librarian') {
+        // Librarians can create 'Customer' or 'Librarian' accounts
+        if (!['Customer', 'Librarian'].includes(userType)) {
+          return res.status(403).json({ error: 'Librarians can only create Customer or Librarian accounts' });
+        }
+      } else if (req.authUser.userType === 'Admin') {
+        // Admins can create accounts with any valid user type
+        if (!['Customer', 'Librarian', 'Admin'].includes(userType)) {
+          return res.status(400).json({ error: 'Invalid user type' });
+        }
+      } else {
+        // If the logged-in user type is invalid
+        return res.status(403).json({ error: 'Unauthorized user type' });
+      }
+    } else {
+      // If no user is logged in, only 'Customer' accounts can be created
+      userType = 'Customer';
     }
 
     // Hash the password
@@ -70,13 +95,19 @@ router.post('/', async (req, res, next) => {
       username,
       firstname,
       lastname,
-      userType: user_type, // Ensure this matches the model's column name
+      userType, // Set the userType based on the checks
       password: hashedPassword,
     });
 
     // Respond with the created user (excluding the password)
-    const { id, username: createdUsername, firstname: createdFirstname, lastname: createdLastname, userType } = user;
-    res.status(201).json({ id, username: createdUsername, firstname: createdFirstname, lastname: createdLastname, userType });
+    const { id, username: createdUsername, firstname: createdFirstname, lastname: createdLastname, userType: createdUserType } = user;
+    res.status(201).json({
+      id,
+      username: createdUsername,
+      firstname: createdFirstname,
+      lastname: createdLastname,
+      userType: createdUserType,
+    });
   } catch (error) {
     next(error);
   }

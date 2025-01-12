@@ -19,11 +19,11 @@
 
 		<div>
 			<label for="user_type">User Type:</label>
-			<select id="user_type" formControlName="user_type">
+			<select id="user_type" formControlName="user_type" [disabled]="!isAuthenticated">
 				<option value="" disabled>Select a user type</option>
-				<option value="Customer">Customer</option>
-				<option value="Librarian">Librarian</option>
-				<option value="Admin">Admin</option>
+				<option *ngFor="let type of availableUserTypes" [value]="type">
+					{{ type }}
+				</option>
 			</select>
 		</div>
 

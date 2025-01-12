@@ -6,6 +6,11 @@
 		{{ errorMessage }}
 	</div>
 
+	<!-- Link to the Create User page -->
+	<div class="create-user-link">
+		<p><a [routerLink]="['/create-user']">Create user</a></p>
+	</div>
+
 	<!-- Table to list users -->
 	<table class="user-table" *ngIf="users.length > 0">
 		<thead>
