@@ -24,7 +24,7 @@ const userFinderById = async (req, res, next) => {
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({
-      attributes: ['id', 'username', 'firstname', 'lastname', 'user_type', 'created_at'],
+      attributes: ['id', 'username', 'firstname', 'lastname', 'user_type', 'created_at', 'disabled'],
     });
     res.json(users);
   } catch (error) {
@@ -113,94 +113,136 @@ router.post('/', tokenExtractor, async (req, res, next) => {
   }
 });
 
-// PUT /api/users/:username: Change user details (logged-in user only)
-router.put('/:username', tokenExtractor, async (req, res, next) => {
+router.put('/:id', tokenExtractor, userFinderById, async (req, res, next) => {
   try {
     const {
-      newUsername,
-      newPassword,
+      username,
+      password,
       firstname,
       lastname,
       otherNames,
-      userType, // Only editable based on permissions
+      userType,
+      disabled, // Correctly using `disabled` instead of `enabled`
     } = req.body;
 
-    // Ensure the logged-in user matches the target username
-    if (req.user.username !== req.params.username) {
-      return res.status(403).json({ error: 'You can only modify your own account' });
+    const isSelfUpdate = req.authUser.id === req.params.id;
+
+    // Role-based access control
+    if (req.authUser.userType === 'Customer' && !isSelfUpdate) {
+      return res
+        .status(403)
+        .json({ error: 'Customers can only modify their own account' });
     }
 
-    // Check if the user is disabled
-    if (req.user.disabled) {
-      return res.status(403).json({ error: 'Your account is disabled and cannot be modified' });
+    if (
+      req.authUser.userType === 'Librarian' &&
+      !isSelfUpdate &&
+      req.targetUser.userType !== 'Customer'
+    ) {
+      return res
+        .status(403)
+        .json({ error: 'Librarians can only modify their own account or Customers' });
     }
 
-    let changes = [];
+    if (req.authUser.userType !== 'Admin' && req.authUser.disabled) {
+      return res
+        .status(403)
+        .json({ error: 'Your account is disabled and cannot be modified' });
+    }
 
-    // Update the username if provided
-    if (newUsername) {
-      req.user.username = newUsername;
+    const changes = [];
+
+    // Update the username if different from current username
+    if (username && req.targetUser.username !== username) {
+      req.targetUser.username = username;
       changes.push('Username updated');
     }
 
-    // Update the password if provided
-    if (newPassword) {
-      if (newPassword.length < 8) {
-        return res.status(400).json({ error: 'Password must be at least 8 characters long' });
+    // Update the password if provided and different from the current value
+    if (password) {
+      if (password.length < 8) {
+        return res.status(400).json({
+          error: 'Password must be at least 8 characters long',
+        });
       }
-      const hashedPassword = await bcrypt.hash(newPassword, 10); // Hash the new password
-      req.user.password = hashedPassword;
-      changes.push('Password updated');
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      if (req.targetUser.password !== hashedPassword) {
+        req.targetUser.password = hashedPassword;
+        changes.push('Password updated');
+      }
     }
 
     // Update firstname if provided
     if (firstname) {
-      req.user.firstname = firstname;
+      req.targetUser.firstname = firstname;
       changes.push('First name updated');
     }
 
     // Update lastname if provided
     if (lastname) {
-      req.user.lastname = lastname;
+      req.targetUser.lastname = lastname;
       changes.push('Last name updated');
     }
 
     // Update otherNames if provided
     if (otherNames) {
-      req.user.otherNames = otherNames;
+      req.targetUser.otherNames = otherNames;
       changes.push('Other names updated');
     }
 
     // Update userType based on role permissions
     if (userType) {
-      if (req.user.userType === 'Admin') {
-        // Admins can update to any valid userType
+      if (req.authUser.userType === 'Admin') {
         if (!['Customer', 'Librarian', 'Admin'].includes(userType)) {
           return res.status(400).json({ error: 'Invalid userType value' });
         }
-        req.user.userType = userType;
+        req.targetUser.userType = userType;
         changes.push('User type updated');
-      } else if (req.user.userType === 'Librarian') {
-        // Librarians can only update Customer to Librarian
-        if (req.user.userType !== 'Customer' || userType !== 'Librarian') {
-          return res.status(403).json({ error: 'Librarians can only update Customers to Librarian' });
+      } else if (req.authUser.userType === 'Librarian') {
+        if (req.targetUser.userType !== 'Customer' || userType !== 'Librarian') {
+          return res.status(403).json({
+            error: 'Librarians can only update Customers to Librarian',
+          });
         }
-        req.user.userType = userType;
+        req.targetUser.userType = userType;
         changes.push('User type updated');
       } else {
-        // Customers cannot update userType
-        return res.status(403).json({ error: 'You do not have permission to update userType' });
+        return res
+          .status(403)
+          .json({ error: 'You do not have permission to update userType' });
+      }
+    }
+
+    // Update disabled status
+    if (disabled !== undefined) {
+      if (req.authUser.userType !== 'Admin') {
+        return res
+          .status(403)
+          .json({ error: 'Only administrators can disable or enable users' });
+      }
+
+      if (typeof disabled !== 'boolean') {
+        return res.status(400).json({ error: 'Disabled must be a boolean value' });
+      }
+
+      if (req.targetUser.disabled !== disabled) {
+        req.targetUser.disabled = disabled;
+        changes.push(`User ${disabled ? 'disabled' : 'enabled'}`);
       }
     }
 
     // Save the changes
-    await req.user.save();
+    await req.targetUser.save();
 
-    // Build a response message
     const message =
       changes.length > 0 ? changes.join(', ') : 'No changes were made';
 
-    res.json({ message, user: { username: req.user.username } });
+    res.json({
+      message,
+      user: { id: req.targetUser.id, username: req.targetUser.username },
+    });
   } catch (error) {
     next(error);
   }

@@ -1,46 +1,45 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { UserService } from '../services/user.service'; // Import UserService
+import { RouterModule } from '@angular/router';
+import { UserService } from '../services/user.service';
+import { ValidatorFn, AbstractControl, ValidationErrors } from '@angular/forms';
 
 @Component({
   selector: 'app-create-user',
-  standalone: true, // Standalone component
-  imports: [CommonModule, ReactiveFormsModule], // Import ReactiveFormsModule
+  standalone: true,
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css'],
 })
 export class CreateUserComponent implements OnInit {
-  userForm: FormGroup; // FormGroup to handle user input
+  userForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
-  availableUserTypes: string[] = []; // List of user types available based on logged-in role
+  availableUserTypes: string[] = [];
   isAuthenticated: boolean = false;
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserService
-  ) {
-    // Initialize the form
-    this.userForm = this.fb.group({
-      username: ['', [Validators.required]],
-      firstname: ['', [Validators.required]],
-      lastname: ['', [Validators.required]],
-      user_type: ['Customer', [Validators.required]], // Default to Customer
-      password: ['', [Validators.required, Validators.minLength(6)]],
-    });
+  constructor(private fb: FormBuilder, private userService: UserService) {
+    const userRole = localStorage.getItem('userType');
+    this.isAuthenticated = !!userRole;
+
+    this.userForm = this.fb.group(
+      {
+        username: ['', [Validators.required]],
+        firstname: ['', [Validators.required]],
+        lastname: ['', [Validators.required]],
+        user_type: [{ value: 'Customer', disabled: !this.isAuthenticated }, [Validators.required]],
+        password: ['', [Validators.required, Validators.minLength(6)]],
+        confirmPassword: ['', [Validators.required]],
+      },
+      { validators: this.passwordMatchValidator }
+    );
   }
 
   ngOnInit(): void {
-    const userRole = localStorage.getItem('userType'); // Get userType from localStorage
-    this.isAuthenticated = !!userRole;
+    const userRole = localStorage.getItem('userType');
 
-    if (!this.isAuthenticated) {
-      // If not authenticated, user type is fixed to Customer
-      this.userForm.get('user_type')?.setValue('Customer');
-      this.userForm.get('user_type')?.disable();
-    } else {
-      // Set available user types based on role
+    if (this.isAuthenticated) {
       switch (userRole) {
         case 'Librarian':
           this.availableUserTypes = ['Customer', 'Librarian'];
@@ -55,25 +54,33 @@ export class CreateUserComponent implements OnInit {
     }
   }
 
+  /**
+   * Custom validator to check if password and confirmPassword match
+   */
+  passwordMatchValidator: ValidatorFn = (control: AbstractControl): ValidationErrors | null => {
+    const password = control.get('password')?.value;
+    const confirmPassword = control.get('confirmPassword')?.value;
+    return password && confirmPassword && password !== confirmPassword
+      ? { passwordMismatch: true }
+      : null;
+  };
+
   onSubmit(): void {
     if (this.userForm.invalid) {
       this.errorMessage = 'Please fill out all required fields.';
       return;
     }
 
-    const userData = this.userForm.value; // Get form data
+    const { confirmPassword, ...userData } = this.userForm.value; // Exclude confirmPassword
 
-    // Use UserService to create a new user
     this.userService.addUser(userData).subscribe({
       next: (response) => {
         this.successMessage = 'User created successfully!';
         this.errorMessage = '';
-        this.userForm.reset(); // Reset the form
-        this.userForm.get('user_type')?.setValue('Customer'); // Reset user type to default
-        console.log('User creation response:', response);
+        this.userForm.reset();
+        this.userForm.get('user_type')?.setValue('Customer');
       },
       error: (error) => {
-        console.error('User creation error:', error);
         this.errorMessage = error.error.message || 'Failed to create user.';
         this.successMessage = '';
       },

@@ -1,6 +1,12 @@
 <div class="create-user-container">
 	<h1>Create New User</h1>
 
+	<!-- Conditional navigation links -->
+	<nav>
+		<a *ngIf="!isAuthenticated" [routerLink]="['/login']" routerLinkActive="active">Login</a>
+		<a *ngIf="isAuthenticated" [routerLink]="['/user-management']" routerLinkActive="active">User Management</a>
+	</nav>
+
 	<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
 		<div>
 			<label for="username">Username:</label>
@@ -19,7 +25,7 @@
 
 		<div>
 			<label for="user_type">User Type:</label>
-			<select id="user_type" formControlName="user_type" [disabled]="!isAuthenticated">
+			<select id="user_type" formControlName="user_type">
 				<option value="" disabled>Select a user type</option>
 				<option *ngFor="let type of availableUserTypes" [value]="type">
 					{{ type }}
@@ -32,10 +38,18 @@
 			<input id="password" formControlName="password" type="password" />
 		</div>
 
+		<div>
+			<label for="confirmPassword">Confirm Password:</label>
+			<input id="confirmPassword" formControlName="confirmPassword" type="password" />
+			<!-- Display error if passwords do not match -->
+			<div *ngIf="userForm.errors?.['passwordMismatch'] && userForm.touched" class="error-message">
+				Passwords do not match.
+			</div>
+		</div>
+
 		<button type="submit" [disabled]="userForm.invalid">Create User</button>
 	</form>
 
-	<!-- Success and error messages -->
 	<div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
 	<div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 </div>

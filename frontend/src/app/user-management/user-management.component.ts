@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService, User } from '../services/user.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router'; // Import RouterModule
+import { RouterModule } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { PasswordChangeModalComponent } from '../password-change-modal/password-change-modal.component';
 
 @Component({
   selector: 'app-user-management',
   standalone: true,
-  imports: [CommonModule, RouterModule], // Add RouterModule here
+  imports: [CommonModule, RouterModule, FormsModule, PasswordChangeModalComponent],
   templateUrl: './user-management.component.html',
   styleUrls: ['./user-management.component.css'],
 })
@@ -14,6 +16,8 @@ export class UserManagementComponent implements OnInit {
   users: User[] = [];
   errorMessage: string = '';
   userRole: string = ''; // Logged-in user's role
+  isPasswordModalOpen: boolean = false; // Flag to show the password change modal
+  currentUserForPasswordChange: User | null = null; // Store the user currently selected for password change
 
   constructor(private userService: UserService) {}
 
@@ -33,45 +37,48 @@ export class UserManagementComponent implements OnInit {
   }
 
   /**
-   * Check if the current user can delete the given user.
+   * Open the password change modal for a specific user.
    */
-  canDelete(user: User): boolean {
+  openPasswordChangeModal(user: User) {
+    this.isPasswordModalOpen = true;
+    this.currentUserForPasswordChange = user;
+  }
+
+  /**
+   * Close the password change modal.
+   */
+  closePasswordChangeModal() {
+    this.isPasswordModalOpen = false;
+    this.currentUserForPasswordChange = null;
+  }
+
+  /**
+   * Save the new password for the user.
+   */
+  changePassword({ newPassword }: { newPassword: string }) {
+    if (this.currentUserForPasswordChange) {
+      this.userService.updateUser(this.currentUserForPasswordChange.id, { password: newPassword }).subscribe(
+        (response) => {
+          alert('Password updated successfully!');
+          this.closePasswordChangeModal(); // Close modal after successful password update
+        },
+        (error) => {
+          this.errorMessage = 'Failed to update password';
+        }
+      );
+    }
+  }
+
+  /**
+   * Check if the current user can edit the given user's details.
+   */
+  canEdit(user: User): boolean {
     if (this.userRole === 'Admin') {
-      return true; // Admins can delete any user
+      return true; // Admins can edit any user
     }
     if (this.userRole === 'Librarian' && user.user_type === 'Customer') {
-      return true; // Librarians can delete Customers only
+      return true; // Librarians can edit Customers
     }
     return false; // No permissions otherwise
-  }
-
-  /**
-   * Show confirmation popup before deleting a user.
-   * @param userId - The ID of the user to delete.
-   */
-  confirmDelete(userId: number): void {
-    const isConfirmed = window.confirm(
-      'Are you sure you want to delete this user? This action cannot be undone.'
-    );
-
-    if (isConfirmed) {
-      this.deleteUser(userId);
-    }
-  }
-
-  /**
-   * Delete a user by ID.
-   * @param userId - The ID of the user to delete.
-   */
-  deleteUser(userId: number): void {
-    this.userService.deleteUser(userId).subscribe(
-      () => {
-        // Remove the deleted user from the list
-        this.users = this.users.filter((user) => user.id !== userId);
-      },
-      (error) => {
-        this.errorMessage = 'Failed to delete user';
-      }
-    );
   }
 }

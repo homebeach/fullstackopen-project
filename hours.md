@@ -23,3 +23,4 @@
 | 10.1. | 6 | URL:n haku environment-määrityksistä. Mahdollisuus luoda käyttäjiä käyttöliittymän kautta. |
 | 11.1. | 10 | Koodin refaktorointia ja parantelua. Käyttäjien hallinnan lisääminen. Käyttäjien poistaminen. |
 | 12.1. | 6 | Käyttäjän hakemiseen tokenista liittyvän koodin korjaaminen backendissä. Käyttäjän luonnin logiikan parantaminen. |
+| 13.1. | 10 | Käyttäjän hallinnan eri ominaisuuksien toteuttaminen ja debukkaaminen. Omien tietojen muokkausnäkymä. |

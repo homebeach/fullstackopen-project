@@ -1,0 +1,42 @@
+<div class="my-account-container">
+	<h1>My Account</h1>
+
+	<!-- Display error or success message -->
+	<div *ngIf="errorMessage" class="error-message">
+		{{ errorMessage }}
+	</div>
+
+	<div *ngIf="successMessage" class="success-message">
+		{{ successMessage }}
+	</div>
+
+	<!-- Form to edit user details -->
+	<form (ngSubmit)="onSubmit()">
+		<div>
+			<label for="username">Username</label>
+			<input id="username" [(ngModel)]="user.username" name="username" required />
+		</div>
+
+		<div>
+			<label for="firstname">First Name</label>
+			<input id="firstname" [(ngModel)]="user.firstname" name="firstname" required />
+		</div>
+
+		<div>
+			<label for="lastname">Last Name</label>
+			<input id="lastname" [(ngModel)]="user.lastname" name="lastname" required />
+		</div>
+
+		<div>
+			<label for="newPassword">New Password</label>
+			<input id="newPassword" type="password" [(ngModel)]="newPassword" name="newPassword" />
+		</div>
+
+		<div>
+			<label for="confirmPassword">Confirm Password</label>
+			<input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" name="confirmPassword" />
+		</div>
+
+		<button type="submit">Save Changes</button>
+	</form>
+</div>

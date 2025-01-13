@@ -10,6 +10,8 @@ export interface User {
   lastname: string;
   user_type: string;
   created_at: string;
+  disabled: boolean;
+  password: string; // Updated field to match backend
 }
 
 @Injectable({
@@ -65,15 +67,15 @@ export class UserService {
   }
 
   /**
-   * Update a user by username.
-   * Only the logged-in user can update their own account.
-   * @param username - The username of the user to be updated.
+   * Update a user by ID.
+   * Allows updating user details, including the `disabled` status and password.
+   * @param id - The ID of the user to be updated.
    * @param updates - The updates to be made to the user.
    */
   updateUser(
-    username: string,
+    id: number,
     updates: Partial<User> & { newPassword?: string }
-  ): Observable<{ message: string; user: { username: string } }> {
+  ): Observable<{ message: string; user: { id: number; username: string } }> {
     const token = localStorage.getItem('token');
 
     if (!token) {
@@ -81,9 +83,18 @@ export class UserService {
     }
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.put<{ message: string; user: { username: string } }>(
-      `${this.apiUrl}/${username}`,
-      updates,
+
+    // Prepare the request body to include the user updates, including password if provided
+    const updatePayload: any = { ...updates };
+
+    // If there's a new password, include it in the update payload
+    if (updates.newPassword) {
+      updatePayload.password = updates.newPassword;
+    }
+
+    return this.http.put<{ message: string; user: { id: number; username: string } }>(
+      `${this.apiUrl}/${id}`,
+      updatePayload,
       { headers }
     );
   }

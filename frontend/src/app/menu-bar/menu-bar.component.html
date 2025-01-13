@@ -2,6 +2,8 @@
 	<div class="menu-links">
 		<a [routerLink]="['/library-list']" routerLinkActive="active">Library List</a>
 		<a [routerLink]="['/borrowed']" routerLinkActive="active">My Borrowed Items</a>
+		<a [routerLink]="['/my-account']" routerLinkActive="active">My Account</a>
+
 		<!-- Conditionally show User Management link -->
 		<a *ngIf="isLibrarianOrAdmin()" [routerLink]="['/user-management']" routerLinkActive="active">User
 			Management</a>

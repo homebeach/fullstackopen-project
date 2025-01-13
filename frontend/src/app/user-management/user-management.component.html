@@ -21,26 +21,46 @@
 				<th>Last Name</th>
 				<th>User Type</th>
 				<th>Created At</th>
+				<th>Disabled</th>
 				<th>Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr *ngFor="let user of users">
 				<td>{{ user.id }}</td>
-				<td>{{ user.username }}</td>
-				<td>{{ user.firstname }}</td>
-				<td>{{ user.lastname }}</td>
-				<td>{{ user.user_type }}</td>
+				<td>
+					<input [(ngModel)]="user.username" [disabled]="!canEdit(user)" placeholder="Username" />
+				</td>
+				<td>
+					<input [(ngModel)]="user.firstname" [disabled]="!canEdit(user)" placeholder="First Name" />
+				</td>
+				<td>
+					<input [(ngModel)]="user.lastname" [disabled]="!canEdit(user)" placeholder="Last Name" />
+				</td>
+				<td>
+					<select [(ngModel)]="user.user_type" [disabled]="!canEdit(user)">
+						<option value="Customer">Customer</option>
+						<option value="Librarian">Librarian</option>
+						<option value="Admin">Admin</option>
+					</select>
+				</td>
 				<td>{{ user.created_at | date: 'short' }}</td>
 				<td>
-					<!-- Show delete button based on user role and permissions -->
-					<button *ngIf="canDelete(user)" (click)="confirmDelete(user.id)">
-						Delete
+					<input type="checkbox" [(ngModel)]="user.disabled" [disabled]="!canEdit(user)" />
+				</td>
+				<td>
+					<button *ngIf="canEdit(user)" (click)="openPasswordChangeModal(user)">
+						Change Password
 					</button>
 				</td>
 			</tr>
 		</tbody>
 	</table>
+
+	<!-- Password Change Modal -->
+	<app-password-change-modal *ngIf="isPasswordModalOpen" (close)="closePasswordChangeModal()"
+		(submit)="changePassword($event)">
+	</app-password-change-modal>
 
 	<!-- Message when no users are found -->
 	<div *ngIf="users.length === 0 && !errorMessage" class="no-users">
