@@ -35,13 +35,17 @@ router.get('/', async (req, res, next) => {
 // GET /api/users/:id: Retrieve a user's details
 router.get('/:id', userFinderById, async (req, res, next) => {
   try {
+
+    console.log("targetUser");
+    console.log(req.targetUser);
+
     const userData = {
-      id: req.user.id,
-      username: req.user.username,
-      firstname: req.user.firstname,
-      lastname: req.user.lastname,
-      user_type: req.user.user_type,
-      created_at: req.user.created_at,
+      id: req.targetUser.id,
+      username: req.targetUser.username,
+      firstname: req.targetUser.firstname,
+      lastname: req.targetUser.lastname,
+      user_type: req.targetUser.user_type,
+      created_at: req.targetUser.created_at,
     };
 
     res.json(userData);

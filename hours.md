@@ -24,3 +24,4 @@
 | 11.1. | 10 | Koodin refaktorointia ja parantelua. Käyttäjien hallinnan lisääminen. Käyttäjien poistaminen. |
 | 12.1. | 6 | Käyttäjän hakemiseen tokenista liittyvän koodin korjaaminen backendissä. Käyttäjän luonnin logiikan parantaminen. |
 | 13.1. | 10 | Käyttäjän hallinnan eri ominaisuuksien toteuttaminen ja debukkaaminen. Omien tietojen muokkausnäkymä. |
+| 14.1. | 2 | Parannuksia omien tietojen muokkausnäkymään. |

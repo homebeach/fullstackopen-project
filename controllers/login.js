@@ -65,6 +65,7 @@ router.post('/', async (request, response) => {
 
     response.status(200).send({
       token,
+      userId: user.id,
       username: user.username,
       firstname: user.firstname,
       lastname: user.lastname,

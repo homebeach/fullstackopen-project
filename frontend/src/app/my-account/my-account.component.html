@@ -1,42 +1,42 @@
 <div class="my-account-container">
 	<h1>My Account</h1>
 
-	<!-- Display error or success message -->
+	<!-- Display error message if any -->
 	<div *ngIf="errorMessage" class="error-message">
 		{{ errorMessage }}
 	</div>
 
+	<!-- Display success message if any -->
 	<div *ngIf="successMessage" class="success-message">
 		{{ successMessage }}
 	</div>
 
-	<!-- Form to edit user details -->
+	<!-- User Details Form -->
 	<form (ngSubmit)="onSubmit()">
-		<div>
-			<label for="username">Username</label>
-			<input id="username" [(ngModel)]="user.username" name="username" required />
+		<div class="form-group">
+			<label for="username">Username:</label>
+			<input type="text" id="username" [(ngModel)]="user.username" name="username" required />
 		</div>
 
-		<div>
-			<label for="firstname">First Name</label>
-			<input id="firstname" [(ngModel)]="user.firstname" name="firstname" required />
+		<div class="form-group">
+			<label for="firstname">First Name:</label>
+			<input type="text" id="firstname" [(ngModel)]="user.firstname" name="firstname" required />
 		</div>
 
-		<div>
-			<label for="lastname">Last Name</label>
-			<input id="lastname" [(ngModel)]="user.lastname" name="lastname" required />
+		<div class="form-group">
+			<label for="lastname">Last Name:</label>
+			<input type="text" id="lastname" [(ngModel)]="user.lastname" name="lastname" required />
 		</div>
 
-		<div>
-			<label for="newPassword">New Password</label>
-			<input id="newPassword" type="password" [(ngModel)]="newPassword" name="newPassword" />
+		<div class="form-group">
+			<button type="button" (click)="openPasswordChangeModal()">Change Password</button>
 		</div>
 
-		<div>
-			<label for="confirmPassword">Confirm Password</label>
-			<input id="confirmPassword" type="password" [(ngModel)]="confirmPassword" name="confirmPassword" />
-		</div>
-
-		<button type="submit">Save Changes</button>
+		<button type="submit">Update</button>
 	</form>
+
+	<!-- Password Change Modal -->
+	<app-password-change-modal *ngIf="isPasswordModalOpen" (close)="closePasswordChangeModal()"
+		(submit)="changePassword($event)">
+	</app-password-change-modal>
 </div>

@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';  // Import CommonModule for ngIf
-import { UserService, User } from '../services/user.service';  // Import UserService and User model
-import { Router } from '@angular/router';  // To navigate after successful update
-import { FormsModule } from '@angular/forms'; // For ngModel binding
+import { CommonModule } from '@angular/common';
+import { UserService, User } from '../services/user.service';
+import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
+import { PasswordChangeModalComponent } from '../password-change-modal/password-change-modal.component';
+
 
 @Component({
   selector: 'app-my-account',
   standalone: true,
-  imports: [FormsModule, CommonModule],  // Import FormsModule for two-way binding
+  imports: [FormsModule, CommonModule, PasswordChangeModalComponent],
   templateUrl: './my-account.component.html',
-  styleUrls: ['./my-account.component.css']
+  styleUrls: ['./my-account.component.css'],
 })
 export class MyAccountComponent implements OnInit {
   user: User = {
@@ -20,60 +22,66 @@ export class MyAccountComponent implements OnInit {
     user_type: '',
     created_at: '',
     disabled: false,
-    password: ''
+    password: '',
   };
-  newPassword: string = '';
-  confirmPassword: string = '';
   errorMessage: string = '';
   successMessage: string = '';
+  isPasswordModalOpen: boolean = false;
 
   constructor(private userService: UserService, private router: Router) {}
 
   ngOnInit(): void {
-    // Fetch logged-in user's data
-    const userId = localStorage.getItem('userId');  // Assume userId is stored in localStorage after login
+    const userId = localStorage.getItem('userId'); // Assume userId is stored after login
     if (userId) {
       this.userService.getUserById(+userId).subscribe(
         (data) => {
-          this.user = data;
+          this.user = data; // Prefill the form with user data
         },
-        (error) => {
-          this.errorMessage = 'Failed to fetch user data';
+        () => {
+          this.errorMessage = 'Failed to fetch user data.';
         }
       );
     }
   }
 
   onSubmit(): void {
-    if (this.newPassword !== this.confirmPassword) {
-      this.errorMessage = 'Passwords do not match.';
-      return;
-    }
-
-    if (this.newPassword.length < 8) {
-      this.errorMessage = 'Password must be at least 8 characters long.';
-      return;
-    }
-
     const updatedData: Partial<User> = {
       username: this.user.username,
       firstname: this.user.firstname,
-      lastname: this.user.lastname
+      lastname: this.user.lastname,
     };
 
-    // Include password if it's being changed
-    if (this.newPassword) {
-      updatedData.password = this.newPassword;
-    }
-
     this.userService.updateUser(this.user.id, updatedData).subscribe(
-      (response) => {
-        this.successMessage = 'User data updated successfully';
+      () => {
+        this.successMessage = 'User data updated successfully.';
+        this.errorMessage = '';
       },
-      (error) => {
-        this.errorMessage = 'Failed to update user data';
+      () => {
+        this.errorMessage = 'Failed to update user data.';
       }
     );
   }
 
+  openPasswordChangeModal(): void {
+    this.isPasswordModalOpen = true;
+  }
+
+  closePasswordChangeModal(): void {
+    this.isPasswordModalOpen = false;
+  }
+
+  changePassword({ newPassword }: { newPassword: string }): void {
+    if (this.user.id) {
+      this.userService.updateUser(this.user.id, { password: newPassword }).subscribe(
+        () => {
+          this.successMessage = 'Password updated successfully.';
+          this.errorMessage = '';
+          this.closePasswordChangeModal();
+        },
+        () => {
+          this.errorMessage = 'Failed to update password.';
+        }
+      );
+    }
+  }
 }
