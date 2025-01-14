@@ -8,6 +8,7 @@ import { MyBorrowedItemsComponent } from './my-borrowed-items/my-borrowed-items.
 import { CreateUserComponent } from './create-user/create-user.component';
 import { UserManagementComponent } from './user-management/user-management.component'; // Import UserManagementComponent
 import { MyAccountComponent } from './my-account/my-account.component'; // Import MyAccountComponent
+import { CreateLibraryItemComponent } from './create-library-item/create-library-item.component';
 
 
 export class PlaceholderComponent {}
@@ -32,6 +33,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       { path: 'library-list', component: LibraryListComponent },
+      { path: 'create-library-item', component: CreateLibraryItemComponent },
       { path: 'borrowed', component: MyBorrowedItemsComponent },
       { path: 'my-account', component: MyAccountComponent },
       { path: 'user-management', component: UserManagementComponent }, // New route for User Management

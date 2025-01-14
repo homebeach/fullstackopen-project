@@ -1,5 +1,8 @@
 <div>
 	<h2>Library Items</h2>
+
+	<a [routerLink]="['/create-library-item']" class="create-link">Create New Library Item</a>
+
 	<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 	<ul>
 		<li *ngFor="let item of libraryItems" class="library-item">
