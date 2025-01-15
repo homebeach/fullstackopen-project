@@ -72,10 +72,12 @@ router.get('/borrowed', tokenExtractor, async (req, res, next) => {
   }
 });
 
-// POST /api/libraryItems: Add new items (restricted to librarians or admins)
+// POST /api/library: Add new items (restricted to librarians or admins)
 router.post('/', roleChecker(['Librarian', 'Admin']), async (req, res, next) => {
   try {
     const libraryItems = req.body;
+
+    console.log("HELLO WE ARE HERE!!!!");
 
     if (!Array.isArray(libraryItems) || libraryItems.length === 0) {
       return res.status(400).json({ error: 'Request body must be a non-empty array of library items' });

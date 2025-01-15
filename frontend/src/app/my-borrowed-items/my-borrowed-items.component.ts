@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common'; // Import CommonModule for Angular pipes like date
 import { environment } from '../../environments/environment'; // Import the environment file
+import { LibraryItem } from '../models/library-item.model'; // Import the LibraryItem model
 
 @Component({
   selector: 'app-my-borrowed-items',
@@ -11,7 +12,7 @@ import { environment } from '../../environments/environment'; // Import the envi
   styleUrls: ['./my-borrowed-items.component.css'],
 })
 export class MyBorrowedItemsComponent implements OnInit {
-  borrowedItems: any[] = [];
+  borrowedItems: LibraryItem[] = []; // Use LibraryItem model
   errorMessage: string = '';
   baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
@@ -35,8 +36,8 @@ export class MyBorrowedItemsComponent implements OnInit {
 
     const url = `${this.baseUrl}/api/library/borrowed`; // Use baseUrl from environment
 
-    this.http.get<any[]>(url, { headers }).subscribe({
-      next: (data) => {
+    this.http.get<LibraryItem[]>(url, { headers }).subscribe({
+      next: (data: LibraryItem[]) => {
         this.borrowedItems = data;
 
         // Extract item IDs and store in localStorage
@@ -49,7 +50,7 @@ export class MyBorrowedItemsComponent implements OnInit {
     });
   }
 
-  returnItem(itemId: number): void {
+  returnItem(itemId: number | undefined): void {
     const url = `${this.baseUrl}/api/borrowItem/${itemId}/return`; // Use baseUrl from environment
 
     // Retrieve the token from localStorage

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common'; // Import CommonModule for Angular directives
+import { RouterModule } from '@angular/router'; // Import RouterModule for routerLink
 import { HttpClient } from '@angular/common/http'; // Import HttpClient for API requests
 import { LibraryService } from '../services/library.service';
 import { environment } from '../../environments/environment'; // Import the environment file
@@ -7,7 +8,7 @@ import { environment } from '../../environments/environment'; // Import the envi
 @Component({
   selector: 'app-library-list',
   standalone: true, // Mark as a standalone component
-  imports: [CommonModule], // Import CommonModule for *ngFor, *ngIf, etc.
+  imports: [CommonModule, RouterModule], // Include RouterModule here
   templateUrl: './library-list.component.html',
   styleUrls: ['./library-list.component.css'],
 })

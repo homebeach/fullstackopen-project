@@ -1,10 +1,20 @@
 <div class="create-library-item-container">
-	<h2>Create Library Item</h2>
+	<h2>Create Library Items</h2>
 
 	<div *ngIf="successMessage" class="success">{{ successMessage }}</div>
 	<div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
 
-	<form (ngSubmit)="onSubmit()">
+	<!-- Dropdown for mode selection -->
+	<div class="form-group">
+		<label for="mode">Mode:</label>
+		<select id="mode" [(ngModel)]="mode" name="mode">
+			<option value="single">Single Item</option>
+			<option value="batch">Batch Insert</option>
+		</select>
+	</div>
+
+	<!-- Single item form -->
+	<form *ngIf="mode === 'single'" (ngSubmit)="onSubmitSingle()">
 		<div class="form-group">
 			<label for="title">Title:</label>
 			<input type="text" id="title" [(ngModel)]="libraryItem.title" name="title" required />
@@ -27,7 +37,11 @@
 
 		<div class="form-group">
 			<label for="type">Type:</label>
-			<input type="text" id="type" [(ngModel)]="libraryItem.type" name="type" />
+			<select id="type" [(ngModel)]="libraryItem.type" name="type" required>
+				<option *ngFor="let type of acceptedTypes" [value]="type">
+					{{ type }}
+				</option>
+			</select>
 		</div>
 
 		<div class="form-group">
@@ -37,5 +51,16 @@
 		</div>
 
 		<button type="submit">Create</button>
+	</form>
+
+	<!-- Batch insert form -->
+	<form *ngIf="mode === 'batch'" (ngSubmit)="onSubmitBatch()">
+		<div class="form-group">
+			<label for="batchInput">Batch Items (JSON Array):</label>
+			<textarea id="batchInput" [(ngModel)]="batchInput" name="batchInput" rows="10" required
+				class="full-width-textarea"></textarea>
+		</div>
+
+		<button type="submit" class="full-width-button">Insert Batch</button>
 	</form>
 </div>

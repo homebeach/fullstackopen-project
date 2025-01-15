@@ -25,3 +25,4 @@
 | 12.1. | 6 | Käyttäjän hakemiseen tokenista liittyvän koodin korjaaminen backendissä. Käyttäjän luonnin logiikan parantaminen. |
 | 13.1. | 10 | Käyttäjän hallinnan eri ominaisuuksien toteuttaminen ja debukkaaminen. Omien tietojen muokkausnäkymä. |
 | 14.1. | 4 | Parannuksia omien tietojen muokkausnäkymään. Uusien kirjastonimikkeiden syöttämiseen tarkoitettu toiminnallisuus. |
+| 15.1. | 6 | Uuden kirjastonimikkeen luonnin debukkaus ja parantelu. Mahdollisuus lisätä myös useita kirjastonimikkeitä JSON-muotoisena taulukkona. |

@@ -17,6 +17,11 @@ h2 {
 	margin-bottom: 15px;
 }
 
+.full-width-textarea,
+.full-width-button {
+	width: 100%;
+}
+
 label {
 	display: block;
 	font-weight: bold;

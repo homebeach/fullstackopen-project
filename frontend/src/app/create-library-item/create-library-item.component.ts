@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+import { LibraryService } from '../services/library.service';
+import { LibraryItem } from '../models/library-item.model';
 
 @Component({
   selector: 'app-create-library-item',
@@ -12,48 +12,80 @@ import { environment } from '../../environments/environment';
   styleUrls: ['./create-library-item.component.css'],
 })
 export class CreateLibraryItemComponent {
-  libraryItem = {
+  libraryItem: LibraryItem = {
     title: '',
     author: '',
     publishedDate: '',
     genre: '',
-    type: '',
+    type: 'Book',
     copiesAvailable: 1,
   };
+
+  batchInput: string = ''; // For batch insert JSON
+  acceptedTypes: LibraryItem['type'][] = ['Book', 'Magazine', 'CD', 'DVD', 'Blu-ray'];
+  mode: 'single' | 'batch' = 'single'; // Dropdown selection
+
   successMessage: string = '';
   errorMessage: string = '';
 
-  constructor(private http: HttpClient) {}
+  constructor(private libraryService: LibraryService) {}
 
-  onSubmit(): void {
-    const url = `${environment.apiBaseUrl}/api/library-items`;
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      this.errorMessage = 'You must be logged in to create a library item.';
-      return;
-    }
-
-    const headers = { Authorization: `Bearer ${token}` };
-
-    this.http.post(url, this.libraryItem, { headers }).subscribe({
+  onSubmitSingle(): void {
+    this.libraryService.setLibraryItems([this.libraryItem]).subscribe({
       next: () => {
         this.successMessage = 'Library item created successfully!';
         this.errorMessage = '';
-        this.libraryItem = {
-          title: '',
-          author: '',
-          publishedDate: '',
-          genre: '',
-          type: '',
-          copiesAvailable: 1,
-        };
+        this.resetSingleForm();
       },
-      error: (error) => {
-        console.error('Failed to create library item:', error);
-        this.errorMessage = 'An error occurred. Please try again.';
-        this.successMessage = '';
+      error: (error: any) => {
+        this.handleError(error);
       },
     });
+  }
+
+  onSubmitBatch(): void {
+    let batchItems: LibraryItem[];
+    try {
+      batchItems = JSON.parse(this.batchInput);
+
+      if (!Array.isArray(batchItems)) {
+        throw new Error('Input must be a JSON array.');
+      }
+
+      this.libraryService.setLibraryItems(batchItems).subscribe({
+        next: () => {
+          this.successMessage = 'Batch library items created successfully!';
+          this.errorMessage = '';
+          this.resetBatchInput();
+        },
+        error: (error: any) => {
+          this.handleError(error);
+        },
+      });
+    } catch (error: any) {
+      this.errorMessage = `Invalid JSON input: ${error.message}`;
+      this.successMessage = '';
+    }
+  }
+
+  private resetSingleForm(): void {
+    this.libraryItem = {
+      title: '',
+      author: '',
+      publishedDate: '',
+      genre: '',
+      type: 'Book',
+      copiesAvailable: 1,
+    };
+  }
+
+  private resetBatchInput(): void {
+    this.batchInput = '';
+  }
+
+  private handleError(error: any): void {
+    console.error('Error occurred:', error);
+    this.errorMessage = error?.error?.message || 'An unexpected error occurred. Please try again.';
+    this.successMessage = '';
   }
 }
