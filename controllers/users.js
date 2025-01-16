@@ -36,9 +36,6 @@ router.get('/', async (req, res, next) => {
 router.get('/:id', userFinderById, async (req, res, next) => {
   try {
 
-    console.log("targetUser");
-    console.log(req.targetUser);
-
     const userData = {
       id: req.targetUser.id,
       username: req.targetUser.username,

@@ -18,7 +18,7 @@ const errorHandler = (error, req, res, next) => {
   }
 
   // Generic error fallback
-  return res.status(500).json({ error: 'Something went wrong' });
+  return res.status(500).json({ error: 'Internal Server Error' });
 };
 
 module.exports = errorHandler;

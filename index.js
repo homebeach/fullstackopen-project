@@ -2,7 +2,7 @@ require('dotenv').config();
 require('express-async-errors');
 
 const express = require('express');
-const cors = require('cors'); // Ensure cors is properly imported
+const cors = require('cors');
 const app = express();
 
 const { PORT } = require('./util/config');
@@ -15,8 +15,8 @@ const libraryRouter = require('./controllers/libraryItem');
 const borrowItemRouter = require('./controllers/borrowItem');
 
 const errorHandler = require('./middleware/errorHandler');
-app.use(cors());
 
+app.use(cors());
 app.use(express.json());
 
 app.use('/api/users', usersRouter);
@@ -25,14 +25,20 @@ app.use('/api/logout', logoutRouter);
 app.use('/api/library', libraryRouter);
 app.use('/api/borrowItem', borrowItemRouter);
 
+// Main error handler
 app.use(errorHandler);
 
 // Start the application
 const start = async () => {
-  await connectToDatabase();
-  app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-  });
+    try {
+        await connectToDatabase();
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.error('Failed to start the server:', error.message);
+        process.exit(1); // Exit the process with a failure code
+    }
 };
 
 start();
