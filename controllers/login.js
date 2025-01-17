@@ -11,6 +11,7 @@ router.post('/', async (request, response) => {
   const { username, password } = request.body;
 
   try {
+
     // Find the user by username
     const user = await User.findOne({
       where: { username },
@@ -73,7 +74,6 @@ router.post('/', async (request, response) => {
       borrowedItems: borrowedItemIds, // Include borrowed item IDs in the response
     });
   } catch (error) {
-    console.error(error);
     response.status(500).json({ error: 'Something went wrong' });
   }
 });
