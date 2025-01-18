@@ -28,3 +28,4 @@
 | 15.1. | 6 | Uuden kirjastonimikkeen luonnin debukkaus ja parantelu. Mahdollisuus lisätä myös useita kirjastonimikkeitä JSON-muotoisena taulukkona. |
 | 16.1. | 8 | LibraryItem-routerin yksikkötestien tekeminen ja debukkaaminen. |
 | 17.1. | 6 | Login-routerin yksikkötestien toteuttaminen ja debukkaus. |
+| 18.1. | 2 | Login-routerin yksikkötestit. |
