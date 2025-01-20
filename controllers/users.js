@@ -252,9 +252,6 @@ router.put('/:id', tokenExtractor, userFinderById, async (req, res, next) => {
 // DELETE /api/users/:id: Delete a user by ID (Librarian can delete Customer, Admin can delete any)
 router.delete('/:id', tokenExtractor, userFinderById, async (req, res, next) => {
   try {
-    console.log('Logged-in user:', req.authUser);
-    console.log('Target user:', req.targetUser);
-
     // Check if the logged-in user is an Admin
     if (req.authUser.userType === 'Admin') {
       // Admins can delete any user

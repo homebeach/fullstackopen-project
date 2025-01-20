@@ -29,3 +29,4 @@
 | 16.1. | 8 | LibraryItem-routerin yksikkötestien tekeminen ja debukkaaminen. |
 | 17.1. | 6 | Login-routerin yksikkötestien toteuttaminen ja debukkaus. |
 | 18.1. | 2 | Login-routerin yksikkötestit. |
+| 19.1. | 5 | Usersin ja BorrowItemin yksikkötestit. |
