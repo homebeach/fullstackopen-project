@@ -30,3 +30,4 @@
 | 17.1. | 6 | Login-routerin yksikkötestien toteuttaminen ja debukkaus. |
 | 18.1. | 2 | Login-routerin yksikkötestit. |
 | 19.1. | 5 | Usersin ja BorrowItemin yksikkötestit. |
+| 20.1. | 4 | ErrorHandler-middleware käyttöön login-apissa. Yksikkötestien debukkaus ja parantaminen. |

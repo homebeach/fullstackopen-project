@@ -5,6 +5,7 @@ const jwt = require('jsonwebtoken');
 const { User, Session, BorrowedItem } = require('../models');
 const loginRouter = require('../controllers/login');
 const { SECRET } = require('../util/config');
+const errorHandler = require('../middleware/errorHandler');
 
 jest.mock('../models', () => ({
   User: {
@@ -33,6 +34,7 @@ jest.mock('jsonwebtoken'); // Mock JWT for consistent token generation
 const app = express();
 app.use(express.json());
 app.use('/api/login', loginRouter);
+app.use(errorHandler);
 
 describe('POST /api/login', () => {
   beforeEach(() => {
@@ -133,7 +135,7 @@ describe('POST /api/login', () => {
       .send({ username: 'testuser', password: 'password123' });
 
     expect(response.status).toBe(500);
-    expect(response.body).toEqual({ error: 'Something went wrong' });
+    expect(response.body).toEqual({ error: 'Database error' });
   });
 
 });

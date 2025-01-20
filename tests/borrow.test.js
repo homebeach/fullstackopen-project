@@ -3,6 +3,7 @@ const express = require('express');
 const { LibraryItem, BorrowedItem } = require('../models');
 const borrowRouter = require('../controllers/borrowItem');
 const tokenExtractor = require('../middleware/tokenExtractor');
+const errorHandler = require('../middleware/errorHandler');
 
 // Mock dependencies
 jest.mock('../models', () => ({
@@ -27,6 +28,7 @@ jest.mock('../middleware/tokenExtractor', () =>
 const app = express();
 app.use(express.json());
 app.use('/api/library', borrowRouter);
+app.use(errorHandler);
 
 describe('Borrow and Return Routes', () => {
   beforeEach(() => {

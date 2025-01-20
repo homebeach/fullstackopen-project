@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt');
 const { User } = require('../models');
 const usersRouter = require('../controllers/users');
 const tokenExtractor = require('../middleware/tokenExtractor');
-const errorHandler = require('../middleware/errorHandler'); // Import the error handler
+const errorHandler = require('../middleware/errorHandler');
 
 // Mock dependencies
 jest.mock('../models', () => ({
@@ -60,7 +60,7 @@ describe('Users Router', () => {
       const response = await request(app).get('/api/users');
 
       expect(response.status).toBe(500);
-      expect(response.body).toEqual({ error: 'Internal Server Error' });
+      expect(response.body).toEqual({ error: 'Database error' });
     });
   });
 

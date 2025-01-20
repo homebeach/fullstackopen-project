@@ -4,11 +4,13 @@ const libraryRouter = require('../controllers/libraryItem');
 const { LibraryItem, BorrowedItem } = require('../models');
 const tokenExtractor = require('../middleware/tokenExtractor');
 const roleChecker = require('../middleware/roleChecker');
+const errorHandler = require('../middleware/errorHandler');
 
 // Mock Express App
 const app = express();
 app.use(express.json());
 app.use('/api/library', libraryRouter);
+app.use(errorHandler);
 
 // Mock the models and middleware
 jest.mock('../models', () => ({
@@ -150,5 +152,6 @@ it('should allow librarians or admins to add new items', async () => {
     const res = await request(app).get('/api/library');
 
     expect(res.statusCode).toBe(500);
+    expect(res.body).toEqual({ error: 'Database error' });
   });
 });

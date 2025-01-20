@@ -3,6 +3,7 @@ const express = require('express');
 const { Session } = require('../models');
 const logoutRouter = require('../controllers/logout');
 const tokenExtractor = require('../middleware/tokenExtractor');
+const errorHandler = require('../middleware/errorHandler');
 
 // Mock dependencies
 jest.mock('../models', () => ({
@@ -19,6 +20,7 @@ jest.mock('../middleware/tokenExtractor', () => jest.fn((req, res, next) => {
 const app = express();
 app.use(express.json());
 app.use('/api/logout', logoutRouter);
+app.use(errorHandler);
 
 describe('DELETE /api/logout', () => {
   beforeEach(() => {
@@ -56,5 +58,6 @@ describe('DELETE /api/logout', () => {
 
     expect(tokenExtractor).toHaveBeenCalled(); // Ensure middleware was called
     expect(response.status).toBe(500);
+    expect(response.body).toEqual({ error: 'Internal Server Error' });
   });
 });

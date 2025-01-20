@@ -7,30 +7,34 @@ const { User, Session, BorrowedItem } = require('../models');
 
 const router = express.Router();
 
-router.post('/', async (request, response) => {
+router.post('/', async (request, response, next) => {
   const { username, password } = request.body;
 
   try {
-
     // Find the user by username
-    const user = await User.findOne({
-      where: { username },
-    });
+    const user = await User.findOne({ where: { username } });
 
     if (!user) {
-      return response.status(401).json({ error: 'Invalid username or password' });
+      const error = new Error('Invalid username or password');
+      error.name = 'AuthenticationError'; // Set error name for 401
+      error.status = 401;
+      throw error;
     }
 
     // Compare the provided password with the hashed password in the database
     const passwordCorrect = await bcrypt.compare(password, user.password);
 
     if (!passwordCorrect) {
-      return response.status(401).json({ error: 'Invalid username or password' });
+      const error = new Error('Invalid username or password');
+      error.name = 'AuthenticationError'; // Set error name for 401
+      error.status = 401;
+      throw error;
     }
 
-    // Check if the user is disabled
     if (user.disabled) {
-      return response.status(403).json({ error: 'User is disabled' });
+      const error = new Error('User is disabled');
+      error.status = 403; // Custom status for this error
+      throw error;
     }
 
     // Invalidate existing sessions if necessary
@@ -40,26 +44,17 @@ router.post('/', async (request, response) => {
     }
 
     // Generate a new token
-    const userForToken = {
-      username: user.username,
-      id: user.id,
-    };
-
+    const userForToken = { username: user.username, id: user.id };
     const token = jwt.sign(userForToken, SECRET);
 
     // Log the session into the sessions table
-    await Session.create({
-      userId: user.id,
-      token,
-    });
+    await Session.create({ userId: user.id, token });
 
     // Fetch borrowed item IDs for the user
     const borrowedItems = await BorrowedItem.findAll({
       where: { userId: user.id },
-      attributes: [
-        [Sequelize.fn('DISTINCT', Sequelize.col('library_item_id')), 'library_item_id']
-      ], // Fetch distinct library_item_id values
-      raw: true, // Return plain object results
+      attributes: [[Sequelize.fn('DISTINCT', Sequelize.col('library_item_id')), 'library_item_id']],
+      raw: true,
     });
 
     const borrowedItemIds = borrowedItems.map((item) => item.library_item_id);
@@ -71,10 +66,10 @@ router.post('/', async (request, response) => {
       firstname: user.firstname,
       lastname: user.lastname,
       userType: user.userType,
-      borrowedItems: borrowedItemIds, // Include borrowed item IDs in the response
+      borrowedItems: borrowedItemIds,
     });
   } catch (error) {
-    response.status(500).json({ error: 'Something went wrong' });
+    next(error); // Pass error to the errorHandler middleware
   }
 });
 
