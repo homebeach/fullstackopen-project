@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
-import { UserService, User } from './user.service';
+import { UserService } from './user.service';
+import { User } from '../models/user.model';
 import { environment } from '../../environments/environment';
 
 describe('UserService', () => {
@@ -17,6 +18,12 @@ describe('UserService', () => {
 
     service = TestBed.inject(UserService);
     httpTestingController = TestBed.inject(HttpTestingController);
+
+    // Mock localStorage
+    spyOn(localStorage, 'getItem').and.callFake((key: string) => {
+      if (key === 'token') return 'mockToken';
+      return null;
+    });
   });
 
   afterEach(() => {
@@ -37,6 +44,8 @@ describe('UserService', () => {
           lastname: 'Doe',
           user_type: 'Admin',
           created_at: '2023-01-01T00:00:00Z',
+          disabled: false,
+          password: '',
         },
         {
           id: 2,
@@ -45,18 +54,19 @@ describe('UserService', () => {
           lastname: 'Doe',
           user_type: 'Customer',
           created_at: '2023-01-02T00:00:00Z',
+          disabled: false,
+          password: '',
         },
       ];
 
-      // Call the service method
       service.getUsers().subscribe((users) => {
         expect(users).toEqual(mockUsers);
       });
 
-      // Mock the HTTP request
       const req = httpTestingController.expectOne(mockApiUrl);
       expect(req.request.method).toBe('GET');
-      req.flush(mockUsers); // Return mock data
+      expect(req.request.headers.get('Authorization')).toBe('Bearer mockToken');
+      req.flush(mockUsers);
     });
   });
 
@@ -69,19 +79,18 @@ describe('UserService', () => {
         lastname: 'Doe',
         user_type: 'Admin',
         created_at: '2023-01-01T00:00:00Z',
+        disabled: false,
+        password: '',
       };
 
-      const userId = 1;
-
-      // Call the service method
-      service.getUserById(userId).subscribe((user) => {
+      service.getUserById(1).subscribe((user) => {
         expect(user).toEqual(mockUser);
       });
 
-      // Mock the HTTP request
-      const req = httpTestingController.expectOne(`${mockApiUrl}/${userId}`);
+      const req = httpTestingController.expectOne(`${mockApiUrl}/1`);
       expect(req.request.method).toBe('GET');
-      req.flush(mockUser); // Return mock data
+      expect(req.request.headers.get('Authorization')).toBe('Bearer mockToken');
+      req.flush(mockUser);
     });
   });
 
@@ -102,24 +111,24 @@ describe('UserService', () => {
         lastname: 'User',
         user_type: 'Customer',
         created_at: '2023-01-03T00:00:00Z',
+        disabled: false,
+        password: '',
       };
 
-      // Call the service method
       service.addUser(newUser).subscribe((user) => {
         expect(user).toEqual(createdUser);
       });
 
-      // Mock the HTTP request
       const req = httpTestingController.expectOne(mockApiUrl);
       expect(req.request.method).toBe('POST');
+      expect(req.request.headers.get('Authorization')).toBe('Bearer mockToken');
       expect(req.request.body).toEqual(newUser);
-      req.flush(createdUser); // Return mock data
+      req.flush(createdUser);
     });
   });
 
   describe('#updateUser', () => {
     it('should update an existing user', () => {
-      const username = 'johndoe';
       const updates = {
         newPassword: 'newpassword123',
         firstname: 'UpdatedJohn',
@@ -127,19 +136,21 @@ describe('UserService', () => {
 
       const mockResponse = {
         message: 'Password updated, First name updated',
-        user: { username: 'johndoe' },
+        user: { id: 1, username: 'johndoe' },
       };
 
-      // Call the service method
-      service.updateUser(username, updates).subscribe((response) => {
+      service.updateUser(1, updates).subscribe((response) => {
         expect(response).toEqual(mockResponse);
       });
 
-      // Mock the HTTP request
-      const req = httpTestingController.expectOne(`${mockApiUrl}/${username}`);
+      const req = httpTestingController.expectOne(`${mockApiUrl}/1`);
       expect(req.request.method).toBe('PUT');
-      expect(req.request.body).toEqual(updates);
-      req.flush(mockResponse); // Return mock data
+      expect(req.request.headers.get('Authorization')).toBe('Bearer mockToken');
+      expect(req.request.body).toEqual({
+        ...updates,
+        password: updates.newPassword,
+      });
+      req.flush(mockResponse);
     });
   });
 });

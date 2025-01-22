@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService, User } from '../services/user.service';
+import { UserService } from '../services/user.service';
+import { User } from '../models/user.model';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PasswordChangeModalComponent } from '../password-change-modal/password-change-modal.component';

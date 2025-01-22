@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService, User } from '../services/user.service';
+import { UserService } from '../services/user.service';
+import { User } from '../models/user.model';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -23,14 +24,17 @@ export class UserManagementComponent implements OnInit {
 
   ngOnInit(): void {
     // Fetch users when the component loads
-    this.userService.getUsers().subscribe(
-      (items) => {
+    this.userService.getUsers().subscribe({
+      next: (items) => {
         this.users = items;
       },
-      (error) => {
+      error: (error) => {
         this.errorMessage = 'Failed to fetch users';
-      }
-    );
+      },
+      complete: () => {
+        // Optional: Perform any actions when the observable completes
+      },
+    });
 
     // Example: Set the userRole based on token or a service
     this.userRole = localStorage.getItem('userType') || 'Customer';
@@ -57,15 +61,15 @@ export class UserManagementComponent implements OnInit {
    */
   changePassword({ newPassword }: { newPassword: string }) {
     if (this.currentUserForPasswordChange) {
-      this.userService.updateUser(this.currentUserForPasswordChange.id, { password: newPassword }).subscribe(
-        (response) => {
+      this.userService.updateUser(this.currentUserForPasswordChange.id, { password: newPassword }).subscribe({
+        next: (response) => {
           alert('Password updated successfully!');
           this.closePasswordChangeModal(); // Close modal after successful password update
         },
-        (error) => {
+        error: (error) => {
           this.errorMessage = 'Failed to update password';
-        }
-      );
+        },
+      });
     }
   }
 
@@ -73,6 +77,11 @@ export class UserManagementComponent implements OnInit {
    * Check if the current user can edit the given user's details.
    */
   canEdit(user: User): boolean {
+
+    console.log("This is userrole");
+    console.log(this.userRole);
+
+
     if (this.userRole === 'Admin') {
       return true; // Admins can edit any user
     }
