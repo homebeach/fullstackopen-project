@@ -74,8 +74,8 @@ export class MyAccountComponent implements OnInit {
   changePassword({ newPassword }: { newPassword: string }): void {
     if (this.user.id) {
       this.userService.updateUser(this.user.id, { password: newPassword }).subscribe(
-        () => {
-          this.successMessage = 'Password updated successfully.';
+        (response) => {
+          this.successMessage = response.message; // Use the message from the response
           this.errorMessage = '';
           this.closePasswordChangeModal();
         },
@@ -85,4 +85,5 @@ export class MyAccountComponent implements OnInit {
       );
     }
   }
+
 }
