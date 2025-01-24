@@ -32,3 +32,4 @@
 | 19.1. | 5 | Usersin ja BorrowItemin yksikkötestit. |
 | 20.1. | 4 | ErrorHandler-middleware käyttöön login-apissa. Yksikkötestien debukkaus ja parantaminen. |
 | 22.1. | 8 | Frontendin yksikkötestien parantaminen ja debukkaus. |
+| 23.1. | 6 | Logoutin rekatorointi ja logiikan siirot serviceen. Servicen ja komponentin yksikkötestit. |

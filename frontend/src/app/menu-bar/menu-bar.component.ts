@@ -1,40 +1,25 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { LogoutService } from '../services/logout.service'; // Import the service
+import { CommonModule } from '@angular/common'; // Import CommonModule
 import { RouterModule } from '@angular/router'; // Import RouterModule
-import { CommonModule } from '@angular/common'; // Import CommonModule for structural directives
-import { environment } from '../../environments/environment'; // Import the environment file
 
 @Component({
   selector: 'app-menu-bar',
   standalone: true,
-  imports: [CommonModule, RouterModule], // Add RouterModule and CommonModule
+  imports: [CommonModule, RouterModule], // Import necessary Angular modules
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.css'],
 })
 export class MenuBarComponent {
   firstname: string = localStorage.getItem('firstname') || '';
   lastname: string = localStorage.getItem('lastname') || '';
-  token: string = localStorage.getItem('token') || '';
-  userType: string = localStorage.getItem('userType') || ''; // Add userType from localStorage
-  borrowedItems: string[] = JSON.parse(localStorage.getItem('borrowedItems') || '[]'); // Parse borrowed items from localStorage
-  baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
+  userType: string = localStorage.getItem('userType') || ''; // Retrieve userType from localStorage
 
-  constructor(private router: Router, private http: HttpClient) {}
+  constructor(private router: Router, private logoutService: LogoutService) {}
 
   logout(): void {
-    if (!this.token) {
-      console.error('No token found. Cannot logout.');
-      return;
-    }
-
-    const logoutUrl = `${this.baseUrl}/api/logout`; // Use baseUrl from environment
-
-    localStorage.clear();
-
-    this.http.delete(logoutUrl, {
-      headers: { Authorization: `Bearer ${this.token}` },
-    }).subscribe({
+    this.logoutService.logout().subscribe({
       next: () => {
         console.log('Logged out successfully');
         this.router.navigate(['/login']).then((success) => {
@@ -46,7 +31,7 @@ export class MenuBarComponent {
         });
       },
       error: (err) => {
-        console.error('Logout error:', err);
+        console.error('Logout failed:', err);
       },
     });
   }
