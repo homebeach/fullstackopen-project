@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { MyBorrowedItemsComponent } from './my-borrowed-items.component';
 import { BorrowService } from '../services/borrow.service';
 import { of, throwError } from 'rxjs';
-import { LibraryItem } from '../models/library-item.model';
+import { LibraryItem, LibraryItemType } from '../models/library-item.model';
 import { CommonModule } from '@angular/common'; // Import CommonModule as it's used in the standalone component
 
 describe('MyBorrowedItemsComponent', () => {
@@ -14,7 +14,7 @@ describe('MyBorrowedItemsComponent', () => {
     const borrowServiceSpy = jasmine.createSpyObj('BorrowService', ['fetchBorrowedItems', 'returnItem']);
 
     TestBed.configureTestingModule({
-      imports: [CommonModule],  // Import CommonModule as it's used in the standalone component
+      imports: [CommonModule], // Import CommonModule as it's used in the standalone component
       providers: [{ provide: BorrowService, useValue: borrowServiceSpy }],
     });
 
@@ -29,8 +29,8 @@ describe('MyBorrowedItemsComponent', () => {
   describe('fetchBorrowedItems', () => {
     it('should fetch borrowed items and store them in localStorage', () => {
       const mockItems: LibraryItem[] = [
-        { id: 1, title: 'Book 1', author: 'Author 1', publishedDate: '2023-01-01', genre: 'Fiction', type: 'Book', copiesAvailable: 5 },
-        { id: 2, title: 'Book 2', author: 'Author 2', publishedDate: '2023-01-02', genre: 'Non-Fiction', type: 'Book', copiesAvailable: 3 },
+        { id: 1, title: 'Book 1', author: 'Author 1', publishedDate: '2023-01-01', genre: 'Fiction', type: LibraryItemType.Book, copiesAvailable: 5 },
+        { id: 2, title: 'Book 2', author: 'Author 2', publishedDate: '2023-01-02', genre: 'Non-Fiction', type: LibraryItemType.Book, copiesAvailable: 3 },
       ];
 
       // Ensure fetchBorrowedItems is returning a mock observable
@@ -60,7 +60,7 @@ describe('MyBorrowedItemsComponent', () => {
     it('should return an item and update borrowed items', () => {
       const itemId = 1;
       const mockItems: LibraryItem[] = [
-        { id: 1, title: 'Book 1', author: 'Author 1', publishedDate: '2023-01-01', genre: 'Fiction', type: 'Book', copiesAvailable: 5 },
+        { id: 1, title: 'Book 1', author: 'Author 1', publishedDate: '2023-01-01', genre: 'Fiction', type: LibraryItemType.Book, copiesAvailable: 5 },
       ];
 
       // Mock returnItem and fetchBorrowedItems
@@ -80,7 +80,7 @@ describe('MyBorrowedItemsComponent', () => {
 
       // Ensure returnItem and fetchBorrowedItems return error observables
       borrowService.returnItem.and.returnValue(throwError(() => error));
-      borrowService.fetchBorrowedItems.and.returnValue(of([]));  // Mocking empty response for fetchBorrowedItems to prevent undefined
+      borrowService.fetchBorrowedItems.and.returnValue(of([])); // Mocking empty response for fetchBorrowedItems to prevent undefined
 
       component.returnItem(itemId);
       fixture.detectChanges();
@@ -92,13 +92,13 @@ describe('MyBorrowedItemsComponent', () => {
   describe('ngOnInit', () => {
     it('should fetch borrowed items on init', () => {
       const mockItems: LibraryItem[] = [
-        { id: 1, title: 'Book 1', author: 'Author 1', publishedDate: '2023-01-01', genre: 'Fiction', type: 'Book', copiesAvailable: 5 },
-        { id: 2, title: 'Book 2', author: 'Author 2', publishedDate: '2023-01-02', genre: 'Non-Fiction', type: 'Book', copiesAvailable: 3 },
+        { id: 1, title: 'Book 1', author: 'Author 1', publishedDate: '2023-01-01', genre: 'Fiction', type: LibraryItemType.Book, copiesAvailable: 5 },
+        { id: 2, title: 'Book 2', author: 'Author 2', publishedDate: '2023-01-02', genre: 'Non-Fiction', type: LibraryItemType.Book, copiesAvailable: 3 },
       ];
 
       borrowService.fetchBorrowedItems.and.returnValue(of(mockItems));
 
-      component.ngOnInit();  // Manually trigger ngOnInit
+      component.ngOnInit(); // Manually trigger ngOnInit
       fixture.detectChanges();
 
       expect(component.borrowedItems).toEqual(mockItems);

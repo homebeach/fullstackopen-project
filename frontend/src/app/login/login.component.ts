@@ -5,6 +5,17 @@ import { Router, RouterModule, NavigationStart, NavigationEnd, NavigationError }
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment'; // Import the environment file
 
+// Define a type for the API response
+interface LoginResponse {
+  token: string;
+  userId: number;
+  username: string;
+  firstname: string;
+  lastname: string;
+  userType: string;
+  borrowedItems: any[];
+}
+
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -19,7 +30,6 @@ export class LoginComponent {
   baseUrl: string = environment.apiBaseUrl; // Use the base URL from environment
 
   constructor(private http: HttpClient, private router: Router) {
-    // Debugging router events
     this.router.events.subscribe((event) => {
       if (event instanceof NavigationStart) {
         console.log('Navigation started to:', event.url);
@@ -39,33 +49,20 @@ export class LoginComponent {
       password: this.password,
     };
 
-    const url = `${this.baseUrl}/api/login`; // Use baseUrl from environment
+    const url = `${this.baseUrl}/api/login`;
 
-    console.log('Login request payload:', loginData); // Debug payload
-
-    this.http.post(url, loginData).subscribe({
-      next: (response: any) => {
-        console.log('Server response:', response); // Debug server response
-
-        // Destructure response
+    this.http.post<LoginResponse>(url, loginData).subscribe({
+      next: (response) => {
         const { token, userId, username, firstname, lastname, userType, borrowedItems } = response;
 
         if (!token) {
-          console.error('Token not found in response. Cannot authenticate.');
           this.errorMessage = 'Authentication failed. Please try again.';
           return;
         }
 
-        console.log('Token:', token);
-        console.log('User id:', userId);
-        console.log('Firstname:', firstname);
-        console.log('Lastname:', lastname);
-        console.log('Usertype:', userType);
-        console.log('Borrowed Items:', borrowedItems);
-
-        // Store token, user details, and borrowed items in localStorage
+        // Store data in localStorage
         localStorage.setItem('token', token);
-        localStorage.setItem('userId', userId);
+        localStorage.setItem('userId', userId.toString());
         localStorage.setItem('username', username);
         localStorage.setItem('firstname', firstname);
         localStorage.setItem('lastname', lastname);
@@ -74,16 +71,14 @@ export class LoginComponent {
 
         // Navigate to the library list
         this.router.navigate(['/library-list']).then((success) => {
-          if (success) {
-            console.log('Navigation to /library-list successful');
-          } else {
+          if (!success) {
             console.error('Navigation to /library-list failed');
           }
         });
       },
       error: (error) => {
-        console.error('Login error:', error); // Debug error response
-        this.errorMessage = 'Invalid username or password'; // Set error message
+        this.errorMessage = 'Invalid username or password';
+        console.error('Login error:', error);
       },
     });
   }

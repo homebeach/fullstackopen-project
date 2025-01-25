@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { BorrowService } from './borrow.service';
 import { environment } from '../../environments/environment';
-import { LibraryItem } from '../models/library-item.model';
+import { LibraryItem, LibraryItemType } from '../models/library-item.model';
 
 describe('BorrowService', () => {
   let service: BorrowService;
@@ -15,7 +15,7 @@ describe('BorrowService', () => {
       author: 'F. Scott Fitzgerald',
       publishedDate: '1925-04-10',
       genre: 'Classic',
-      type: 'Book',
+      type: LibraryItemType.Book, // Updated to use enum
       copiesAvailable: 3,
     },
     {
@@ -24,7 +24,7 @@ describe('BorrowService', () => {
       author: 'Wachowskis',
       publishedDate: '1999-03-31',
       genre: 'Science Fiction',
-      type: 'DVD',
+      type: LibraryItemType.DVD, // Updated to use enum
       copiesAvailable: 1,
     },
   ];
@@ -76,7 +76,6 @@ describe('BorrowService', () => {
       service.fetchBorrowedItems().subscribe({
         next: () => fail('Should have failed with an error'),
         error: (error) => {
-          // Now the test will expect the custom error message
           expect(error.message).toBe('Failed to fetch borrowed items.');
         },
       });
@@ -86,7 +85,6 @@ describe('BorrowService', () => {
       expect(req.request.method).toBe('GET');
       req.flush('Internal Server Error', { status: 500, statusText: 'Server Error' });
     });
-
   });
 
   describe('returnItem', () => {

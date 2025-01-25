@@ -33,3 +33,4 @@
 | 20.1. | 4 | ErrorHandler-middleware käyttöön login-apissa. Yksikkötestien debukkaus ja parantaminen. |
 | 22.1. | 8 | Frontendin yksikkötestien parantaminen ja debukkaus. |
 | 23.1. | 6 | Logoutin rekatorointi ja logiikan siirot serviceen. Servicen ja komponentin yksikkötestit. |
+| 24.1. | 8 | Library-item -model käyttämään enumia ja koodin refaktorointi. Library-list ja login refaktorointi. |

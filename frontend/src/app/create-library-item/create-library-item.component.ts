@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LibraryService } from '../services/library.service';
-import { LibraryItem } from '../models/library-item.model';
+import { LibraryItem, LibraryItemType } from '../models/library-item.model';
 
 @Component({
   selector: 'app-create-library-item',
@@ -17,13 +17,18 @@ export class CreateLibraryItemComponent {
     author: '',
     publishedDate: '',
     genre: '',
-    type: 'Book',
+    type: LibraryItemType.Book,
     copiesAvailable: 1,
   };
 
   batchInput: string = ''; // For batch insert JSON
-  acceptedTypes: LibraryItem['type'][] = ['Book', 'Magazine', 'CD', 'DVD', 'Blu-ray'];
-  mode: 'single' | 'batch' = 'single'; // Dropdown selection
+  acceptedTypes: LibraryItemType[] = [
+    LibraryItemType.Book,
+    LibraryItemType.Magazine,
+    LibraryItemType.CD,
+    LibraryItemType.DVD,
+    LibraryItemType.BluRay,
+  ];   mode: 'single' | 'batch' = 'single'; // Dropdown selection
 
   successMessage: string = '';
   errorMessage: string = '';
@@ -74,7 +79,7 @@ export class CreateLibraryItemComponent {
       author: '',
       publishedDate: '',
       genre: '',
-      type: 'Book',
+      type: LibraryItemType.Book,
       copiesAvailable: 1,
     };
   }

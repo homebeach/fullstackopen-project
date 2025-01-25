@@ -1,7 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LibraryService } from './library.service';
-import { LibraryItem } from '../models/library-item.model';
+import { LibraryItem, LibraryItemType } from '../models/library-item.model';
 import { environment } from '../../environments/environment';
 
 describe('LibraryService', () => {
@@ -41,18 +41,22 @@ describe('LibraryService', () => {
     it('should fetch library items', () => {
       const mockLibraryItems: LibraryItem[] = [
         {
-          id: 1, title: 'Book A', author: 'Author A',
+          id: 1,
+          title: 'Book A',
+          author: 'Author A',
           publishedDate: '',
           genre: '',
-          type: 'Book',
-          copiesAvailable: 0
+          type: LibraryItemType.Book, // Updated to use enum
+          copiesAvailable: 0,
         },
         {
-          id: 2, title: 'Book B', author: 'Author B',
+          id: 2,
+          title: 'Book B',
+          author: 'Author B',
           publishedDate: '',
           genre: '',
-          type: 'Book',
-          copiesAvailable: 0
+          type: LibraryItemType.Book, // Updated to use enum
+          copiesAvailable: 0,
         },
       ];
 
@@ -71,18 +75,22 @@ describe('LibraryService', () => {
     it('should set library items', () => {
       const mockLibraryItems: LibraryItem[] = [
         {
-          id: 1, title: 'Book A', author: 'Author A',
+          id: 1,
+          title: 'Book A',
+          author: 'Author A',
           publishedDate: '',
           genre: '',
-          type: 'Book',
-          copiesAvailable: 0
+          type: LibraryItemType.Book, // Updated to use enum
+          copiesAvailable: 0,
         },
         {
-          id: 2, title: 'Book B', author: 'Author B',
+          id: 2,
+          title: 'Book B',
+          author: 'Author B',
           publishedDate: '',
           genre: '',
-          type: 'Book',
-          copiesAvailable: 0
+          type: LibraryItemType.Book, // Updated to use enum
+          copiesAvailable: 0,
         },
       ];
 
