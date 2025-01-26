@@ -19,6 +19,7 @@ export class CreateUserComponent implements OnInit {
   availableUserTypes: string[] = [];
   isAuthenticated: boolean = false;
 
+
   constructor(private fb: FormBuilder, private userService: UserService) {
     const userRole = localStorage.getItem('userType');
     this.isAuthenticated = !!userRole;
@@ -32,26 +33,34 @@ export class CreateUserComponent implements OnInit {
         password: ['', [Validators.required, Validators.minLength(6)]],
         confirmPassword: ['', [Validators.required]],
       },
-      { validators: this.passwordMatchValidator }
+      {
+        validators: this.passwordMatchValidator, // Add the custom validator here
+      }
     );
   }
 
+
   ngOnInit(): void {
     const userRole = localStorage.getItem('userType');
+    this.isAuthenticated = !!userRole;
 
-    if (this.isAuthenticated) {
-      switch (userRole) {
-        case 'Librarian':
-          this.availableUserTypes = ['Customer', 'Librarian'];
-          break;
-        case 'Admin':
-          this.availableUserTypes = ['Customer', 'Librarian', 'Admin'];
-          break;
-        default:
-          this.availableUserTypes = ['Customer'];
-          break;
-      }
+    //IF I COMMENT THIS AWAY IT WORKS
+    switch (userRole) {
+      case 'Librarian':
+        this.availableUserTypes = ['Customer', 'Librarian'];
+        this.userForm.get('user_type')?.enable();
+        break;
+      case 'Admin':
+        this.availableUserTypes = ['Customer', 'Librarian', 'Admin'];
+        this.userForm.get('user_type')?.enable();
+        break;
+      default:
+        this.availableUserTypes = ['Customer'];
+        this.userForm.get('user_type')?.setValue(userRole || 'Customer');
+        this.userForm.get('user_type')?.disable();
+        break;
     }
+
   }
 
   /**
@@ -71,7 +80,8 @@ export class CreateUserComponent implements OnInit {
       return;
     }
 
-    const { confirmPassword, ...userData } = this.userForm.value; // Exclude confirmPassword
+    const { confirmPassword, ...userData } = this.userForm.getRawValue(); // Use getRawValue() to include disabled fields
+    userData.user_type = this.userForm.get('user_type')?.value || 'Customer'; // Explicitly set the user_type
 
     this.userService.addUser(userData).subscribe({
       next: (response) => {
@@ -86,4 +96,5 @@ export class CreateUserComponent implements OnInit {
       },
     });
   }
+
 }

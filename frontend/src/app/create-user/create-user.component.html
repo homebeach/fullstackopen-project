@@ -25,7 +25,7 @@
 
 		<div>
 			<label for="user_type">User Type:</label>
-			<select id="user_type" formControlName="user_type">
+			<select id="user_type" formControlName="user_type" >
 				<option value="" disabled>Select a user type</option>
 				<option *ngFor="let type of availableUserTypes" [value]="type">
 					{{ type }}
@@ -41,7 +41,7 @@
 		<div>
 			<label for="confirmPassword">Confirm Password:</label>
 			<input id="confirmPassword" formControlName="confirmPassword" type="password" />
-			<!-- Display error if passwords do not match -->
+			<!-- Display error if passwords do not match [disabled]="!isAuthenticated"-->
 			<div *ngIf="userForm.errors?.['passwordMismatch'] && userForm.touched" class="error-message">
 				Passwords do not match.
 			</div>
