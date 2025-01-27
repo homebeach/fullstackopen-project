@@ -35,3 +35,4 @@
 | 23.1. | 6 | Logoutin rekatorointi ja logiikan siirot serviceen. Servicen ja komponentin yksikkötestit. |
 | 24.1. | 8 | Library-item -model käyttämään enumia ja koodin refaktorointi. Library-list ja login refaktorointi. |
 | 26.1. | 8 | Guardsien ja create-userin yksikkötestit. Testien debukkaaminen ja korjaaminen. |
+| 27.1. | 2 | Create-library-itemin yksikkötestit. |
