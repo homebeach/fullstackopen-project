@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router'; // Import RouterModule
 export class MenuBarComponent {
   firstname: string = localStorage.getItem('firstname') || '';
   lastname: string = localStorage.getItem('lastname') || '';
+  token: string = localStorage.getItem('token') || '';
   userType: string = localStorage.getItem('userType') || ''; // Retrieve userType from localStorage
 
   constructor(private router: Router, private logoutService: LogoutService) {}

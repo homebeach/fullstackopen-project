@@ -34,7 +34,12 @@ export class MyBorrowedItemsComponent implements OnInit {
     });
   }
 
-  returnItem(itemId: number): void {
+  returnItem(itemId?: number): void {
+    if (itemId === undefined) {
+      console.error('Cannot return item without an ID');
+      return;
+    }
+
     this.borrowService.returnItem(itemId).subscribe({
       next: () => {
         console.log(`Item with ID ${itemId} returned successfully`);
@@ -45,4 +50,5 @@ export class MyBorrowedItemsComponent implements OnInit {
       },
     });
   }
+
 }

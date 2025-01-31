@@ -36,6 +36,6 @@
 | 24.1. | 8 | Library-item -model käyttämään enumia ja koodin refaktorointi. Library-list ja login refaktorointi. |
 | 26.1. | 8 | Guardsien ja create-userin yksikkötestit. Testien debukkaaminen ja korjaaminen. |
 | 27.1. | 2 | Create-library-itemin yksikkötestit. |
-| 31.1. | 4 | Users-routerin parantelua. LibraryItemin korjaus frontendissä. |
+| 31.1. | 6 | Users-routerin parantelua. LibraryItemin korjaus frontendissä. Frontendin korjaus. |
 
 
