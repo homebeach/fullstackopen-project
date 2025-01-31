@@ -61,7 +61,13 @@ export class LibraryListComponent implements OnInit, OnDestroy {
     }
   }
 
-  borrowItem(itemId: number): void {
+  borrowItem(itemId?: number): void {
+    if (itemId === undefined) {
+      console.error("Item ID is undefined, cannot borrow.");
+      this.errorMessage = "Invalid item selected.";
+      return;
+    }
+
     const url = `${this.baseUrl}/api/borrowItem/${itemId}/borrow`; // Use baseUrl from environment
 
     // Retrieve the token from localStorage
@@ -73,9 +79,7 @@ export class LibraryListComponent implements OnInit, OnDestroy {
     }
 
     // Set headers with the token
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
+    const headers = { Authorization: `Bearer ${token}` };
 
     this.http.post(url, {}, { headers }).pipe(
       takeUntil(this.destroy$) // Automatically unsubscribe on component destroy
@@ -99,21 +103,18 @@ export class LibraryListComponent implements OnInit, OnDestroy {
       },
       error: (error) => {
         console.error('Failed to borrow item:', error);
-
-        // Display appropriate error message
-        if (error.status === 401) {
-          this.errorMessage = 'Unauthorized. Please log in again.';
-        } else {
-          this.errorMessage = 'Could not borrow the item. Please try again.';
-        }
+        this.errorMessage = error.status === 401
+          ? 'Unauthorized. Please log in again.'
+          : 'Could not borrow the item. Please try again.';
       },
     });
   }
 
-  isItemBorrowed(itemId: number): boolean {
-    // Ensure both itemId and borrowedItems elements are strings for comparison
+  isItemBorrowed(itemId?: number): boolean {
+    if (!itemId) return false; // Return false if no valid ID is provided
+
     const borrowedItemsAsStrings = this.borrowedItems.map((id) => id.toString());
-    const isBorrowed = borrowedItemsAsStrings.includes(itemId.toString());
-    return isBorrowed;
+    return borrowedItemsAsStrings.includes(itemId.toString());
   }
+
 }

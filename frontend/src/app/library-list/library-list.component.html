@@ -16,10 +16,11 @@
 				Created At: {{ item.createdAt | date:'short' }} |
 				Updated At: {{ item.updatedAt | date:'short' }}
 			</small>
-			<button [disabled]="isItemBorrowed(item.id) || item.copiesAvailable === 0" (click)="borrowItem(item.id)"
-				class="borrow-button">
+			<button [disabled]="!item.id || isItemBorrowed(item.id) || item.copiesAvailable === 0"
+				(click)="item.id && borrowItem(item.id)" class="borrow-button">
 				Borrow
 			</button>
+
 		</li>
 	</ul>
 </div>

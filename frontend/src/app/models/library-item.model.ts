@@ -14,4 +14,6 @@ export interface LibraryItem {
   genre: string;
   type: LibraryItemType; // Use the enum for the type property
   copiesAvailable: number;
+  createdAt?: string; // Add createdAt as optional
+  updatedAt?: string; // Add updatedAt as optional
 }

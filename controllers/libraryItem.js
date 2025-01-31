@@ -30,6 +30,8 @@ router.get('/', async (req, res, next) => {
           )`),
           'copiesAvailable', // Renaming `dynamicCopiesAvailable` to `copiesAvailable`
         ],
+        'createdAt', // Include createdAt
+        'updatedAt', // Include updatedAt
       ],
     });
 
