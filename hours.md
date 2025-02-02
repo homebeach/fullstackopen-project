@@ -37,5 +37,4 @@
 | 26.1. | 8 | Guardsien ja create-userin yksikkötestit. Testien debukkaaminen ja korjaaminen. |
 | 27.1. | 2 | Create-library-itemin yksikkötestit. |
 | 31.1. | 6 | Users-routerin parantelua. LibraryItemin korjaus frontendissä. Frontendin korjaus. |
-
-
+| 2.2. | 1 | Users test -korjaus. |

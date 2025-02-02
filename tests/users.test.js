@@ -103,7 +103,7 @@ describe('Users Router', () => {
         username: 'new_user',
         firstname: 'New',
         lastname: 'User',
-        userType: 'Customer',
+        user_type: 'Customer', // Fixed field name
       });
 
       const response = await request(app).post('/api/users').send({
@@ -117,7 +117,7 @@ describe('Users Router', () => {
         username: 'new_user',
         firstname: 'New',
         lastname: 'User',
-        userType: 'Customer',
+        user_type: 'Customer', // Fixed field name
         password: 'hashedPassword',
       });
       expect(response.status).toBe(201);
@@ -126,7 +126,7 @@ describe('Users Router', () => {
         username: 'new_user',
         firstname: 'New',
         lastname: 'User',
-        userType: 'Customer',
+        user_type: 'Customer', // Fixed field name
       });
     });
 
