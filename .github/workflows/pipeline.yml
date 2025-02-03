@@ -26,11 +26,11 @@ jobs:
         run: sudo apt-get install -y libappindicator3-1 fonts-liberation
 
       # Backend setup
-      #- name: Install backend dependencies
-      #  run: npm install
+      - name: Install backend dependencies
+        run: npm install
 
-      #- name: Run backend tests
-      #  run: npm test
+      - name: Run backend tests
+        run: npm test
 
       # Frontend setup
       - name: Install frontend dependencies
