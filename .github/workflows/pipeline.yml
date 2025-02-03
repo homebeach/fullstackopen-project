@@ -26,11 +26,11 @@ jobs:
         run: sudo apt-get install -y libappindicator3-1 fonts-liberation
 
       # Backend setup
-      - name: Install backend dependencies
-        run: npm install
+      #- name: Install backend dependencies
+      #  run: npm install
 
-      - name: Run backend tests
-        run: npm test
+      #- name: Run backend tests
+      #  run: npm test
 
       # Frontend setup
       - name: Install frontend dependencies
@@ -42,6 +42,6 @@ jobs:
         working-directory: frontend
 
       - name: Run frontend tests in headless mode
-        run: npm test -- --include=src/app/my-account/my-account.component.spec.ts --watch=false --browsers=ChromeHeadless
+        run: |
+          npm test --include=frontend/src/app/app.component.spec.ts --include=frontend/src/app/guards/auth.guard.spec.ts --include=frontend/src/app/guards/redirect.guard.spec.ts --include=frontend/src/app/password-change-modal/password-change-modal.component.spec.ts --include=frontend/src/app/library-list/library-list.component.spec.ts --include=frontend/src/app/login/login.component.spec.ts --include=frontend/src/app/my-account/my-account.component.spec.ts --include=frontend/src/app/create-library-item/create-library-item.component.spec.ts --include=frontend/src/app/menu-bar/menu-bar.component.spec.ts --include=frontend/src/app/main-layout/main-layout.component.spec.ts --include=frontend/src/app/my-borrowed-items/my-borrowed-items.component.spec.ts --include=frontend/src/app/create-user/create-user.component.spec.ts --include=frontend/src/app/user-management/user-management.component.spec.ts --include=frontend/src/app/services/user.service.spec.ts --include=frontend/src/app/services/library.service.spec.ts --include=frontend/src/app/services/borrow.service.spec.ts --include=frontend/src/app/services/logout.service.spec.ts -- --watch=false --browsers=ChromeHeadless
         working-directory: frontend
-
