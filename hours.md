@@ -38,4 +38,4 @@
 | 27.1. | 2 | Create-library-itemin yksikkötestit. |
 | 31.1. | 6 | Users-routerin parantelua. LibraryItemin korjaus frontendissä. Frontendin korjaus. |
 | 2.2. | 1 | Users test -korjaus. |
-| 3.2. | 1 | CI/CD Pipelinen toteuttaminen. |
+| 3.2. | 4 | CI/CD Pipelinen toteuttaminen ja debukkaus. Renderiin hostatun projektin korjaaminen toimivaksi. |
