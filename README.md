@@ -8,6 +8,10 @@ The project is available on Render: [https://fullstackopen-project-1.onrender.co
 - **Backend:** Node.js 23 with Express 4.21
 - **Database:** PostgreSQL 16
 
+## Project Hours
+
+For a detailed breakdown of work hours, see [Project Hours](./hours.md).
+
 ## Basic Usage
 
 You can try the application by logging in with the following account:
