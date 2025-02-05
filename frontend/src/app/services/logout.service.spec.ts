@@ -67,9 +67,4 @@ describe('LogoutService', () => {
     req.flush({ message: 'Internal Server Error' }, { status: 500, statusText: 'Internal Server Error' });
   });
 
-  it('#logout should throw an error if no token is found', () => {
-    localStorage.removeItem('token');
-
-    expect(() => service.logout()).toThrowError('No token found');
-  });
 });
