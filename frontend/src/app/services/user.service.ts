@@ -47,11 +47,6 @@ export class UserService {
    */
   addUser(user: Partial<User> & { password: string }): Observable<User> {
     const token = localStorage.getItem('token');
-
-    if (!token) {
-      throw new Error('No token found');
-    }
-
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.post<User>(this.apiUrl, user, { headers });
   }

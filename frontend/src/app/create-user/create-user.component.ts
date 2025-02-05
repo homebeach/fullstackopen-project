@@ -19,10 +19,9 @@ export class CreateUserComponent implements OnInit {
   availableUserTypes: string[] = [];
   isAuthenticated: boolean = false;
 
-
   constructor(private fb: FormBuilder, private userService: UserService) {
-    const userRole = localStorage.getItem('userType');
-    this.isAuthenticated = !!userRole;
+    const token = localStorage.getItem('token');
+    this.isAuthenticated = !!token; // Check for token instead of userType
 
     this.userForm = this.fb.group(
       {
@@ -34,17 +33,15 @@ export class CreateUserComponent implements OnInit {
         confirmPassword: ['', [Validators.required]],
       },
       {
-        validators: this.passwordMatchValidator, // Add the custom validator here
+        validators: this.passwordMatchValidator,
       }
     );
   }
 
-
   ngOnInit(): void {
     const userRole = localStorage.getItem('userType');
-    this.isAuthenticated = !!userRole;
+    this.isAuthenticated = !!localStorage.getItem('token'); // Again, check token
 
-    //IF I COMMENT THIS AWAY IT WORKS
     switch (userRole) {
       case 'Librarian':
         this.availableUserTypes = ['Customer', 'Librarian'];
@@ -56,11 +53,10 @@ export class CreateUserComponent implements OnInit {
         break;
       default:
         this.availableUserTypes = ['Customer'];
-        this.userForm.get('user_type')?.setValue(userRole || 'Customer');
+        this.userForm.get('user_type')?.setValue('Customer');
         this.userForm.get('user_type')?.disable();
         break;
     }
-
   }
 
   /**

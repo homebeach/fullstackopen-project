@@ -9,9 +9,6 @@
 		<div class="user-info">
 			Logged in as: {{ firstname }} {{ lastname }}
 			<button class="logout-btn" (click)="logout()">Logout</button>
-			<div *ngIf="token">
-				<p><strong>Token:</strong> {{ token }}</p> <!-- Display the token -->
-			</div>
 		</div>
 	</div>
 </div>
