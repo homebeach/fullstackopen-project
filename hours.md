@@ -41,7 +41,7 @@
 | 3.2. | 4 | CI/CD Pipelinen toteuttaminen ja debukkaus. Renderiin hostatun projektin korjaaminen toimivaksi. |
 | 4.2. | 4 | Frontendin parantelua. Logout-korjaus. |
 | 5.2. | 4 | Frontendin yksikkötestin korjaus. README:n päivittäminen.  |
-| 6.2. | 1 | Käyttäjien poistaminen.  |
+| 6.2. | 1 | Käyttäjien poistaminen frontendiin.  |
+| 7.2. | 2 | Koodin siistimistä.  |
 
-
-Yhteensä 206 tuntia.
+Yhteensä 208 tuntia.
