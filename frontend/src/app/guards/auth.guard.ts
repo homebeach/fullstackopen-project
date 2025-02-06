@@ -9,15 +9,12 @@ export class AuthGuard implements CanActivate {
   constructor(private router: Router, @Inject(PLATFORM_ID) private platformId: any) {}
 
   canActivate(): boolean {
-    console.log('AuthGuard invoked');
 
     // Check if the platform is the browser
     if (isPlatformBrowser(this.platformId)) {
-      console.log('Running in browser environment');
 
       try {
         const token = localStorage.getItem('token'); // Check for token
-        console.log('Is token present?', !!token);
 
         if (!token) {
           console.warn('No token found. Redirecting to /login');

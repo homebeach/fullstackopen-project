@@ -1,17 +1,17 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { CommonModule } from '@angular/common'; // Import CommonModule for Angular directives
-import { RouterModule } from '@angular/router'; // Import RouterModule for routerLink
-import { HttpClient } from '@angular/common/http'; // Import HttpClient for API requests
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { HttpClient } from '@angular/common/http';
 import { LibraryService } from '../services/library.service';
 import { LibraryItem } from '../models/library-item.model';
-import { environment } from '../../environments/environment'; // Import the environment file
-import { Subject } from 'rxjs'; // Import Subject for handling observables
-import { takeUntil } from 'rxjs/operators'; // Import takeUntil to handle observable cleanup
+import { environment } from '../../environments/environment';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-library-list',
-  standalone: true, // Mark as a standalone component
-  imports: [CommonModule, RouterModule], // Include RouterModule here
+  standalone: true,
+  imports: [CommonModule, RouterModule],
   templateUrl: './library-list.component.html',
   styleUrls: ['./library-list.component.css'],
 })
@@ -24,7 +24,7 @@ export class LibraryListComponent implements OnInit, OnDestroy {
 
   constructor(
     private libraryService: LibraryService,
-    private http: HttpClient // Inject HttpClient
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
@@ -46,7 +46,6 @@ export class LibraryListComponent implements OnInit, OnDestroy {
   }
 
   loadBorrowedItems(): void {
-    // Retrieve borrowed items from localStorage
     const borrowedItemsJson = localStorage.getItem('borrowedItems');
     if (borrowedItemsJson) {
       try {
@@ -70,7 +69,6 @@ export class LibraryListComponent implements OnInit, OnDestroy {
 
     const url = `${this.baseUrl}/api/borrowItem/${itemId}/borrow`; // Use baseUrl from environment
 
-    // Retrieve the token from localStorage
     const token = localStorage.getItem('token');
     if (!token) {
       console.error('No token found. User is not authenticated.');
@@ -90,13 +88,11 @@ export class LibraryListComponent implements OnInit, OnDestroy {
         // Update the item's availability in the UI
         const borrowedItem = this.libraryItems.find((item) => item.id === itemId);
         if (borrowedItem) {
-          borrowedItem.copiesAvailable -= 1; // Decrease the available copies count
+          borrowedItem.copiesAvailable -= 1;
         }
 
-        // Add the borrowed item ID to the borrowedItems array
         this.borrowedItems.push(itemId.toString());
 
-        // Update localStorage
         localStorage.setItem('borrowedItems', JSON.stringify(this.borrowedItems));
 
         console.log(`Updated borrowedItems: ${this.borrowedItems}`);

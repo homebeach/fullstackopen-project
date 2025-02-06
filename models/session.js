@@ -18,7 +18,7 @@ Session.init(
       type: DataTypes.INTEGER,
       allowNull: false,
       references: {
-        model: 'users', // This should match the table name for User
+        model: 'users',
         key: 'id',
       },
     },

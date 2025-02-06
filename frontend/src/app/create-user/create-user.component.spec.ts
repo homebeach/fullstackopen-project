@@ -2,10 +2,8 @@ import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { CreateUserComponent } from './create-user.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UserService } from '../services/user.service';
-import { ActivatedRoute, RouterModule } from '@angular/router'; // Import ActivatedRoute
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { of, throwError } from 'rxjs';
-import { By } from '@angular/platform-browser';
-import { User } from '../models/user.model';
 
 describe('CreateUserComponent', () => {
   let component: CreateUserComponent;
@@ -14,7 +12,7 @@ describe('CreateUserComponent', () => {
   let mockActivatedRoute: any;
 
   beforeEach(async () => {
-    // Mock the UserService
+
     mockUserService = jasmine.createSpyObj('UserService', ['addUser']);
 
     mockUserService.addUser.and.returnValue(of({
@@ -28,18 +26,16 @@ describe('CreateUserComponent', () => {
       password: 'testpassword', // Use a dummy password
     }));
 
-    // Mock the ActivatedRoute
     mockActivatedRoute = {
       snapshot: { params: { id: null } },
     };
 
-    // Set up localStorage if required
     localStorage.setItem('userType', 'Customer'); // Simulate an authenticated user
 
     await TestBed.configureTestingModule({
       imports: [
         ReactiveFormsModule,
-        FormsModule, // Add FormsModule here
+        FormsModule,
         CreateUserComponent,
         RouterModule
       ],
@@ -81,7 +77,6 @@ describe('CreateUserComponent', () => {
       });
     });
   });
-
 
   describe('Form validation', () => {
     it('should require all fields to be filled', () => {
@@ -176,7 +171,6 @@ describe('CreateUserComponent', () => {
       expect(component.successMessage).toBe('User created successfully!');
       expect(component.errorMessage).toBe('');
     });
-
 
     it('should display an error message if addUser fails', () => {
       mockUserService.addUser.and.returnValue(throwError({ error: { message: 'Failed to create user.' } }));
@@ -316,7 +310,6 @@ describe('CreateUserComponent', () => {
       expect(component.successMessage).toBe('User created successfully!');
       expect(component.errorMessage).toBe('');
     });
-
 
     it('should display an error message if addUser fails', () => {
       mockUserService.addUser.and.returnValue(throwError({ error: { message: 'Failed to create user.' } }));

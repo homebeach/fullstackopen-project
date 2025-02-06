@@ -15,7 +15,7 @@ describe('BorrowService', () => {
       author: 'F. Scott Fitzgerald',
       publishedDate: '1925-04-10',
       genre: 'Classic',
-      type: LibraryItemType.Book, // Updated to use enum
+      type: LibraryItemType.Book,
       copiesAvailable: 3,
     },
     {
@@ -24,7 +24,7 @@ describe('BorrowService', () => {
       author: 'Wachowskis',
       publishedDate: '1999-03-31',
       genre: 'Science Fiction',
-      type: LibraryItemType.DVD, // Updated to use enum
+      type: LibraryItemType.DVD,
       copiesAvailable: 1,
     },
   ];

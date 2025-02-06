@@ -11,12 +11,12 @@ describe('UserManagementComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserManagementComponent, HttpClientTestingModule], // Only necessary modules
+      imports: [UserManagementComponent, HttpClientTestingModule],
       providers: [
         {
-          provide: ActivatedRoute, // Mock ActivatedRoute
+          provide: ActivatedRoute,
           useValue: {
-            snapshot: { params: {} }, // Mock params (customize as needed)
+            snapshot: { params: {} },
           },
         },
       ],

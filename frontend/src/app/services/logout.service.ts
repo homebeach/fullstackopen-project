@@ -17,11 +17,6 @@ export class LogoutService {
    */
   logout(): Observable<void> {
     const token = localStorage.getItem('token');
-/*
-    if (!token) {
-      throw new Error('No token found');
-    }
-*/
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete<void>(this.apiUrl, { headers });
   }

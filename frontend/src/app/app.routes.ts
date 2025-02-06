@@ -6,8 +6,8 @@ import { RedirectGuard } from './guards/redirect.guard';
 import { MainLayoutComponent } from './main-layout/main-layout.component';
 import { MyBorrowedItemsComponent } from './my-borrowed-items/my-borrowed-items.component';
 import { CreateUserComponent } from './create-user/create-user.component';
-import { UserManagementComponent } from './user-management/user-management.component'; // Import UserManagementComponent
-import { MyAccountComponent } from './my-account/my-account.component'; // Import MyAccountComponent
+import { UserManagementComponent } from './user-management/user-management.component';
+import { MyAccountComponent } from './my-account/my-account.component';
 import { CreateLibraryItemComponent } from './create-library-item/create-library-item.component';
 
 
@@ -36,7 +36,7 @@ export const routes: Routes = [
       { path: 'create-library-item', component: CreateLibraryItemComponent },
       { path: 'borrowed', component: MyBorrowedItemsComponent },
       { path: 'my-account', component: MyAccountComponent },
-      { path: 'user-management', component: UserManagementComponent }, // New route for User Management
+      { path: 'user-management', component: UserManagementComponent },
     ],
   },
 ];

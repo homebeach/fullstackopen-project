@@ -6,7 +6,6 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { PasswordChangeModalComponent } from '../password-change-modal/password-change-modal.component';
 
-
 @Component({
   selector: 'app-my-account',
   standalone: true,

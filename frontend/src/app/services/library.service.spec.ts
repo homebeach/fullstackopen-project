@@ -46,7 +46,7 @@ describe('LibraryService', () => {
           author: 'Author A',
           publishedDate: '',
           genre: '',
-          type: LibraryItemType.Book, // Updated to use enum
+          type: LibraryItemType.Book,
           copiesAvailable: 0,
         },
         {
@@ -55,7 +55,7 @@ describe('LibraryService', () => {
           author: 'Author B',
           publishedDate: '',
           genre: '',
-          type: LibraryItemType.Book, // Updated to use enum
+          type: LibraryItemType.Book,
           copiesAvailable: 0,
         },
       ];
@@ -80,7 +80,7 @@ describe('LibraryService', () => {
           author: 'Author A',
           publishedDate: '',
           genre: '',
-          type: LibraryItemType.Book, // Updated to use enum
+          type: LibraryItemType.Book,
           copiesAvailable: 0,
         },
         {
@@ -89,7 +89,7 @@ describe('LibraryService', () => {
           author: 'Author B',
           publishedDate: '',
           genre: '',
-          type: LibraryItemType.Book, // Updated to use enum
+          type: LibraryItemType.Book,
           copiesAvailable: 0,
         },
       ];

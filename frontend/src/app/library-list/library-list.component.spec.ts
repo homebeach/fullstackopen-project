@@ -1,10 +1,10 @@
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { LibraryService } from '../services/library.service';
-import { LibraryItem, LibraryItemType } from '../models/library-item.model';
+import { LibraryItemType } from '../models/library-item.model';
 import { of, throwError } from 'rxjs';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LibraryListComponent } from './library-list.component';  // Import directly
+import { LibraryListComponent } from './library-list.component';
 
 describe('LibraryListComponent', () => {
   let component: LibraryListComponent;

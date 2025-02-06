@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { LibraryItem } from '../models/library-item.model';
-import { environment } from '../../environments/environment'; // Import environment file
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +14,7 @@ export class LibraryService {
 
   // Get all library items
   getLibraryItems(): Observable<LibraryItem[]> {
-    const token = localStorage.getItem('token'); // Get token from localStorage
+    const token = localStorage.getItem('token');
 
     if (!token) {
       throw new Error('No token found');

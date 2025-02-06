@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router'; // Import RouterModule
 @Component({
   selector: 'app-menu-bar',
   standalone: true,
-  imports: [CommonModule, RouterModule], // Import necessary Angular modules
+  imports: [CommonModule, RouterModule],
   templateUrl: './menu-bar.component.html',
   styleUrls: ['./menu-bar.component.css'],
 })
@@ -15,7 +15,7 @@ export class MenuBarComponent {
   firstname: string = localStorage.getItem('firstname') || '';
   lastname: string = localStorage.getItem('lastname') || '';
   token: string = localStorage.getItem('token') || '';
-  userType: string = localStorage.getItem('userType') || ''; // Retrieve userType from localStorage
+  userType: string = localStorage.getItem('userType') || '';
 
   constructor(private router: Router, private logoutService: LogoutService) {}
 

@@ -11,20 +11,20 @@ describe('CreateLibraryItemComponent', () => {
   let libraryServiceSpy: jasmine.SpyObj<LibraryService>;
 
   beforeEach(async () => {
-	// Create a spy for the LibraryService
-	const libraryServiceMock = jasmine.createSpyObj('LibraryService', ['setLibraryItems']);
 
-	await TestBed.configureTestingModule({
-		imports: [CreateLibraryItemComponent, FormsModule], // Import the standalone component
-		providers: [
-		{ provide: LibraryService, useValue: libraryServiceMock },
-		],
-	}).compileComponents();
+    const libraryServiceMock = jasmine.createSpyObj('LibraryService', ['setLibraryItems']);
 
-	fixture = TestBed.createComponent(CreateLibraryItemComponent);
-	component = fixture.componentInstance;
-	libraryServiceSpy = TestBed.inject(LibraryService) as jasmine.SpyObj<LibraryService>;
-	fixture.detectChanges(); // Trigger initial binding
+    await TestBed.configureTestingModule({
+      imports: [CreateLibraryItemComponent, FormsModule], // Import the standalone component
+      providers: [
+      { provide: LibraryService, useValue: libraryServiceMock },
+      ],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(CreateLibraryItemComponent);
+    component = fixture.componentInstance;
+    libraryServiceSpy = TestBed.inject(LibraryService) as jasmine.SpyObj<LibraryService>;
+    fixture.detectChanges();
   });
 
   it('should create the component', () => {
@@ -46,21 +46,21 @@ describe('CreateLibraryItemComponent', () => {
   });
 
   it('should reset the single form after successful submission', () => {
-	libraryServiceSpy.setLibraryItems.and.returnValue(of([])); // Simulates success
+    libraryServiceSpy.setLibraryItems.and.returnValue(of([]));
 
-	component.onSubmitSingle();
+    component.onSubmitSingle();
 
-	expect(libraryServiceSpy.setLibraryItems).toHaveBeenCalledWith([component.libraryItem]);
-	expect(component.successMessage).toBe('Library item created successfully!');
-	expect(component.errorMessage).toBe('');
-	expect(component.libraryItem).toEqual({
-		title: '',
-		author: '',
-		publishedDate: '',
-		genre: '',
-		type: LibraryItemType.Book,
-		copiesAvailable: 1,
-	});
+    expect(libraryServiceSpy.setLibraryItems).toHaveBeenCalledWith([component.libraryItem]);
+    expect(component.successMessage).toBe('Library item created successfully!');
+    expect(component.errorMessage).toBe('');
+    expect(component.libraryItem).toEqual({
+      title: '',
+      author: '',
+      publishedDate: '',
+      genre: '',
+      type: LibraryItemType.Book,
+      copiesAvailable: 1,
+    });
   });
 
   it('should handle errors when submitting a single item', () => {
@@ -74,25 +74,25 @@ describe('CreateLibraryItemComponent', () => {
   });
 
   it('should submit batch items successfully', () => {
-	const batchInput = JSON.stringify([
-		{
-		title: 'Book 1',
-		author: 'Author 1',
-		publishedDate: '2025-01-01',
-		genre: 'Fiction',
-		type: LibraryItemType.Book,
-		copiesAvailable: 3,
-		},
-	]);
-	libraryServiceSpy.setLibraryItems.and.returnValue(of([])); // Simulates success
+    const batchInput = JSON.stringify([
+      {
+      title: 'Book 1',
+      author: 'Author 1',
+      publishedDate: '2025-01-01',
+      genre: 'Fiction',
+      type: LibraryItemType.Book,
+      copiesAvailable: 3,
+      },
+    ]);
+    libraryServiceSpy.setLibraryItems.and.returnValue(of([]));
 
-	component.batchInput = batchInput;
-	component.onSubmitBatch();
+    component.batchInput = batchInput;
+    component.onSubmitBatch();
 
-	expect(libraryServiceSpy.setLibraryItems).toHaveBeenCalledWith(JSON.parse(batchInput));
-	expect(component.successMessage).toBe('Batch library items created successfully!');
-	expect(component.errorMessage).toBe('');
-	expect(component.batchInput).toBe('');
+    expect(libraryServiceSpy.setLibraryItems).toHaveBeenCalledWith(JSON.parse(batchInput));
+    expect(component.successMessage).toBe('Batch library items created successfully!');
+    expect(component.errorMessage).toBe('');
+    expect(component.batchInput).toBe('');
   });
 
   it('should handle invalid JSON input for batch submission', () => {

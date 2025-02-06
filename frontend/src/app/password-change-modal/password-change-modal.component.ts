@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { FormsModule } from '@angular/forms'; // Import FormsModule
-import { CommonModule } from '@angular/common'; // Import CommonModule for ngIf
+import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-password-change-modal',
   standalone: true,
-  imports: [CommonModule, FormsModule], // Add CommonModule and FormsModule to imports
+  imports: [CommonModule, FormsModule],
   templateUrl: './password-change-modal.component.html',
   styleUrls: ['./password-change-modal.component.css']
 })

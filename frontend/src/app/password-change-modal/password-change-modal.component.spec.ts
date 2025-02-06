@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { PasswordChangeModalComponent } from './password-change-modal.component';
-import { FormsModule } from '@angular/forms'; // Required for ngModel binding
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 
 describe('PasswordChangeModalComponent', () => {
@@ -9,7 +9,7 @@ describe('PasswordChangeModalComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PasswordChangeModalComponent, FormsModule], // Import FormsModule for ngModel
+      imports: [PasswordChangeModalComponent, FormsModule],
     }).compileComponents();
 
     fixture = TestBed.createComponent(PasswordChangeModalComponent);

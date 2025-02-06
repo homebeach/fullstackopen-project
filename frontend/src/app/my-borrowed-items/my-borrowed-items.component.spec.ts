@@ -3,7 +3,7 @@ import { MyBorrowedItemsComponent } from './my-borrowed-items.component';
 import { BorrowService } from '../services/borrow.service';
 import { of, throwError } from 'rxjs';
 import { LibraryItem, LibraryItemType } from '../models/library-item.model';
-import { CommonModule } from '@angular/common'; // Import CommonModule as it's used in the standalone component
+import { CommonModule } from '@angular/common';
 
 describe('MyBorrowedItemsComponent', () => {
   let component: MyBorrowedItemsComponent;

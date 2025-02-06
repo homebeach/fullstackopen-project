@@ -21,15 +21,16 @@ export class CreateLibraryItemComponent {
     copiesAvailable: 1,
   };
 
-  batchInput: string = ''; // For batch insert JSON
+  batchInput: string = '';
   acceptedTypes: LibraryItemType[] = [
     LibraryItemType.Book,
     LibraryItemType.Magazine,
     LibraryItemType.CD,
     LibraryItemType.DVD,
     LibraryItemType.BluRay,
-  ];   mode: 'single' | 'batch' = 'single'; // Dropdown selection
+  ];
 
+  mode: 'single' | 'batch' = 'single';
   successMessage: string = '';
   errorMessage: string = '';
 

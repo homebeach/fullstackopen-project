@@ -1,5 +1,8 @@
 # Full Stack Open Project
 
+This project is a simple library application with user management and content management. There are three user roles Customer, Librarian and Admin.
+Customers can borrow and return books. Librarians and Admins can also add library items and edit users. Librarians can only edit Customers. Admins can edit anybody.
+
 The project is available on Render: [https://fullstackopen-project-1.onrender.com/](https://fullstackopen-project-1.onrender.com/).
 
 ## Technical Implementation

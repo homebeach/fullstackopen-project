@@ -3,11 +3,11 @@ export enum LibraryItemType {
   Magazine = 'Magazine',
   CD = 'CD',
   DVD = 'DVD',
-  BluRay = 'Blu-ray', // Enum values must match the original literal types
+  BluRay = 'Blu-ray',
 }
 
 export interface LibraryItem {
-  id?: number; // Optional for new items being created
+  id?: number;
   title: string;
   author: string;
   publishedDate: string; // ISO date string format (e.g., "2025-01-14")

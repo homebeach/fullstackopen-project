@@ -42,4 +42,5 @@ describe('AuthGuard', () => {
     expect(result).toBeFalse(); // Should return false if not logged in
     expect(routerMock.navigate).toHaveBeenCalledWith(['/login']); // Should navigate to login
   });
+
 });

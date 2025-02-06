@@ -22,10 +22,12 @@ jest.mock('../models', () => ({
     findAll: jest.fn(),
   },
 }));
+
 jest.mock('../middleware/tokenExtractor', () => jest.fn((req, res, next) => {
   req.authUser = { id: 1, userType: 'User' };
   next();
 }));
+
 jest.mock('../middleware/roleChecker', () => jest.fn(() => (req, res, next) => {
   if (req.authUser.userType !== 'Admin') {
     return res.status(403).json({ error: 'Access denied' });

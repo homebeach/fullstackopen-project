@@ -6,5 +6,5 @@ export interface User {
   user_type: string;
   created_at: string;
   disabled: boolean;
-  password: string; // Updated field to match backend
+  password: string;
 }

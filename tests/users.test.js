@@ -27,7 +27,7 @@ jest.mock('../middleware/tokenExtractor', () =>
 const app = express();
 app.use(express.json());
 app.use('/api/users', usersRouter);
-app.use(errorHandler); // Add the error handler middleware here
+app.use(errorHandler);
 
 describe('Users Router', () => {
   beforeEach(() => {
