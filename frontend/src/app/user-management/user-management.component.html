@@ -49,8 +49,12 @@
 					<input type="checkbox" [(ngModel)]="user.disabled" [disabled]="!canEdit(user)" />
 				</td>
 				<td>
-					<button *ngIf="canEdit(user)" (click)="openPasswordChangeModal(user)">
+					<button *ngIf="canEdit(user)" (click)="openPasswordChangeModal(user)" class="action-button">
 						Change Password
+					</button>
+					<!-- Add space between the buttons using a class -->
+					<button *ngIf="canEdit(user)" (click)="deleteUser(user.id)" class="action-button delete-button">
+						Delete
 					</button>
 				</td>
 			</tr>

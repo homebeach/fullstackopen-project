@@ -77,11 +77,6 @@ export class UserManagementComponent implements OnInit {
    * Check if the current user can edit the given user's details.
    */
   canEdit(user: User): boolean {
-
-    console.log("This is userrole");
-    console.log(this.userRole);
-
-
     if (this.userRole === 'Admin') {
       return true; // Admins can edit any user
     }
@@ -89,5 +84,19 @@ export class UserManagementComponent implements OnInit {
       return true; // Librarians can edit Customers
     }
     return false; // No permissions otherwise
+  }
+
+  deleteUser(userId: number) {
+    if (confirm('Are you sure you want to delete this user?')) {
+      this.userService.deleteUser(userId).subscribe({
+        next: () => {
+          this.users = this.users.filter(user => user.id !== userId);
+          alert('User deleted successfully!');
+        },
+        error: () => {
+          this.errorMessage = 'Failed to delete user';
+        },
+      });
+    }
   }
 }
