@@ -7,7 +7,9 @@
     "build": "ng build frontend --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:frontend": "node dist/frontend/server/server.mjs"
+    "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
+    "e2e": "ng serve & npx playwright test",
+    "e2e:headed": "ng serve & npx playwright test --headed"
   },
   "private": true,
   "dependencies": {
@@ -30,6 +32,7 @@
     "@angular-devkit/build-angular": "^19.0.6",
     "@angular/cli": "^19.0.6",
     "@angular/compiler-cli": "^19.0.0",
+    "@playwright/test": "^1.51.1",
     "@types/express": "^4.17.17",
     "@types/jasmine": "~5.1.0",
     "@types/jest": "^29.5.14",
