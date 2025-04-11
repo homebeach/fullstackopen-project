@@ -8,8 +8,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:frontend": "node dist/frontend/server/server.mjs",
-    "e2e": "ng serve & npx playwright test",
-    "e2e:headed": "ng serve & npx playwright test --headed"
+    "e2e": "npm run build && npx serve -s dist/frontend & npx playwright test",
+    "e2e:headed": "npm run build && npx serve -s dist/frontend & npx playwright test --headed"
   },
   "private": true,
   "dependencies": {

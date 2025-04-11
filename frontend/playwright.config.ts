@@ -5,7 +5,7 @@ export default defineConfig({
   timeout: 30000,
   retries: 0,
   use: {
-    baseURL: 'http://localhost:4200',
+    baseURL: 'https://fullstackopen-project-1.onrender.com',
     browserName: 'chromium',
     headless: true,
     viewport: { width: 1280, height: 720 },
