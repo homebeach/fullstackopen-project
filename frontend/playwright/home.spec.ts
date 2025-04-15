@@ -20,7 +20,6 @@ test('should navigate to Create User and register a new user', async ({ page }) 
   await page.fill('input#username', 'test');
   await page.fill('input#firstname', 'Test');
   await page.fill('input#lastname', 'User');
-
   await page.fill('input#password', 'testtest');
   await page.fill('input#confirmPassword', 'testtest');
 
@@ -28,7 +27,11 @@ test('should navigate to Create User and register a new user', async ({ page }) 
   const button = page.locator('button[type="submit"]');
   await expect(button).toBeEnabled(); // Optional: wait for button to become active
   await button.click();
+
+  // 6. Expect success message
+  await expect(page.locator('text=User created successfully!')).toBeVisible();
 });
+
 
 test('should login and borrow the first available book', async ({ page }) => {
   // 1. Go to the login page
