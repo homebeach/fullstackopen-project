@@ -5,7 +5,6 @@ test('homepage loads and shows title', async ({ page }) => {
   await expect(page).toHaveTitle(/Frontend/i);
 });
 
-
 test('should navigate to Create User and register a new user', async ({ page }) => {
   // 1. Go to the login page
   await page.goto('/login');
@@ -31,7 +30,6 @@ test('should navigate to Create User and register a new user', async ({ page }) 
   // 6. Expect success message
   await expect(page.locator('text=User created successfully!')).toBeVisible();
 });
-
 
 test('should login and borrow the first available book', async ({ page }) => {
   // 1. Go to the login page
