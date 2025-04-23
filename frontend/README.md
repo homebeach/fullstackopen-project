@@ -29,3 +29,19 @@ To execute unit tests with the [Karma](https://karma-runner.github.io) test runn
 ```bash
 ng test
 ```
+
+## Running end-to-end (e2e) tests
+
+End-to-end tests are powered by Playwright. These tests simulate real user behavior and interactions in the browser.
+
+To run e2e tests in headless mode:
+
+```bash
+npm run e2e
+```
+
+To run e2e tests in headed mode (with the browser UI visible):
+
+```bash
+npm run e2e:headed
+```
